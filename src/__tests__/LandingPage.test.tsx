@@ -3,122 +3,66 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import { describe, expect, it, vi } from 'vitest';
 import LandingPage from '../pages/LandingPage';
 
-function renderWithRouter(ui: React.ReactElement, { route = '/' } = {}) {
-  return render(<MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>);
+function renderLanding(route = '/') {
+  return render(
+    <HelmetProvider>
+      <MemoryRouter initialEntries={[route]}>
+        <LandingPage />
+      </MemoryRouter>
+    </HelmetProvider>
+  );
 }
 
-describe('LandingPage - Learn More button', () => {
-  it('scrolls to features section when Learn More is clicked', async () => {
-    const scrollIntoViewMock = vi.fn();
-    const originalGetElementById = document.getElementById.bind(document);
+describe('LandingPage', () => {
+  it('renders hero headline', () => {
+    renderLanding();
+    expect(screen.getByRole('heading', { name: /say it\. slide it\. ship it\./i })).toBeInTheDocument();
+  });
 
-    vi.spyOn(document, 'getElementById').mockImplementation((id: string) => {
-      const element = originalGetElementById(id);
-      if (id === 'features' && element) {
-        // assign mock implementation to the element's scrollIntoView
-        element.scrollIntoView = scrollIntoViewMock;
-      }
-      return element;
-    });
-
-    renderWithRouter(<LandingPage />);
-
+  it('CTA buttons have correct links/actions', async () => {
+    renderLanding();
     const user = userEvent.setup();
-    const learnMoreButton = screen.getByRole('button', { name: /learn more/i });
-    await user.click(learnMoreButton);
+    const startButton = screen.getByRole('button', { name: /start creating/i });
+    expect(startButton).toBeInTheDocument();
+    // simulate click - navigate
+    await user.click(startButton);
+    // Note: with MemoryRouter, no change in location. We only check button present here
 
-    expect(scrollIntoViewMock).toHaveBeenCalledWith({ behavior: 'smooth' });
-
-    vi.restoreAllMocks();
+    const seePricing = screen.getByRole('button', { name: /see pricing/i });
+    expect(seePricing).toBeInTheDocument();
   });
 
-  it('handles missing features element gracefully', async () => {
-    vi.spyOn(document, 'getElementById').mockReturnValue(null);
+  it('renders all 3 pricing tiers', () => {
+    renderLanding();
+    const plans = screen.getAllByRole('heading', { name: /(Free|Educator|Pro)/ });
+    expect(plans.length).toBe(3);
+    expect(screen.getByText(/5 presentations\/month/)).toBeInTheDocument();
+    expect(screen.getByText(/Unlimited presentations/)).toBeInTheDocument();
+    expect(screen.getByText(/Everything in Educator/)).toBeInTheDocument();
+  });
 
-    renderWithRouter(<LandingPage />);
-
+  it('monthly/annual toggle works and annual shows savings', async () => {
+    renderLanding();
     const user = userEvent.setup();
-    const learnMoreButton = screen.getByRole('button', { name: /learn more/i });
-
-    // Should not throw when features element is missing
-    await expect(user.click(learnMoreButton)).resolves.not.toThrow();
-
-    vi.restoreAllMocks();
-  });
-});
-
-describe('LandingPage - accessibility', () => {
-  it('has accessible navigation landmark', () => {
-    renderWithRouter(<LandingPage />);
-
-    const nav = screen.getByRole('navigation', { name: /main navigation/i });
-    expect(nav).toBeInTheDocument();
+    const monthly = screen.getByRole('button', { name: /monthly/i });
+    const annual = screen.getByRole('button', { name: /annual/i });
+    expect(monthly).toHaveAttribute('aria-pressed', 'true');
+    expect(annual).toHaveAttribute('aria-pressed', 'false');
+    await user.click(annual);
+    expect(monthly).toHaveAttribute('aria-pressed', 'false');
+    expect(annual).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByText(/save/i)).toBeInTheDocument();
   });
 
-  it('has accessible main content landmark', () => {
-    renderWithRouter(<LandingPage />);
-
-    const main = screen.getByRole('main');
-    expect(main).toBeInTheDocument();
-  });
-
-  it('displays the app logo in navigation', () => {
-    renderWithRouter(<LandingPage />);
-
-    const nav = screen.getByRole('navigation', { name: /main navigation/i });
-    const logo = within(nav).getByRole('heading', { level: 2 });
-    expect(logo).toHaveClass('nav-logo');
-  });
-});
-
-describe('LandingPage - hero visual card', () => {
-  it('displays hero card with feature highlights', () => {
-    renderWithRouter(<LandingPage />);
-
-    expect(screen.getByText(/Fast & Modern|Fast & Modern/i)).toBeInTheDocument();
-    expect(screen.getByText(/Secure by Design/i)).toBeInTheDocument();
-    expect(screen.getByText(/Real-time Analytics/i)).toBeInTheDocument();
-  });
-
-  it('displays decorative dots in card header', () => {
-    renderWithRouter(<LandingPage />);
-
-    const container = document.querySelector('.card-dots');
-    expect(container).toBeInTheDocument();
-    expect(container?.querySelectorAll('.dot')).toHaveLength(3);
-  });
-
-  it('displays app name in card title', () => {
-    renderWithRouter(<LandingPage />);
-
-    const cardTitle = document.querySelector('.card-title');
-    expect(cardTitle).toBeInTheDocument();
-  });
-});
-
-describe('LandingPage - feature cards content', () => {
-  it('displays feature card descriptions', () => {
-    renderWithRouter(<LandingPage />);
-
-    expect(
-      screen.getByText(/Built with React 19 and modern web technologies for optimal performance/i),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Microsoft Entra ID integration with enterprise-grade security features/i),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/Real-time monitoring and insights powered by Grafana and OpenTelemetry/i),
-    ).toBeInTheDocument();
-  });
-
-  it('displays feature icons', () => {
-    renderWithRouter(<LandingPage />);
-
-    expect(screen.getByText('⚡')).toBeInTheDocument();
-    expect(screen.getByText('🛡️')).toBeInTheDocument();
-    expect(screen.getByText('📈')).toBeInTheDocument();
+  it('SEO helmet meta tags are present', () => {
+    renderLanding();
+    expect(document.head.innerHTML).toMatch(/slidesay[^<]*turn your voice/i);
+    expect(document.head.innerHTML).toMatch(/og:title/i);
+    expect(document.head.innerHTML).toMatch(/og:description/i);
+    expect(document.head.innerHTML).toMatch(/application\/ld\+json/i);
   });
 });

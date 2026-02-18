@@ -2,6 +2,7 @@ import { MsalProvider } from '@azure/msal-react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { type BrowserRouterProps, BrowserRouter } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import App from './App';
 import { initializeMsal, msalInstance } from './config/msal.config';
 import './index.css';
@@ -31,18 +32,20 @@ initializeMsal()
   .then(() => {
     createRoot(rootElement).render(
       <StrictMode>
-        <MsalProvider instance={msalInstance}>
-          <BrowserRouter
-            {...({
-              future: {
-                v7_startTransition: true,
-                v7_relativeSplatPath: true,
-              },
-            } as BrowserRouterPropsWithFuture)}
-          >
-            <App />
-          </BrowserRouter>
-        </MsalProvider>
+        <HelmetProvider>
+          <MsalProvider instance={msalInstance}>
+            <BrowserRouter
+              {...({
+                future: {
+                  v7_startTransition: true,
+                  v7_relativeSplatPath: true,
+                },
+              } as BrowserRouterPropsWithFuture)}
+            >
+              <App />
+            </BrowserRouter>
+          </MsalProvider>
+        </HelmetProvider>
       </StrictMode>,
     );
   })

@@ -43,3 +43,4 @@ build
 
 # Husky (old versions)
 .husky/_
+*.tgz
