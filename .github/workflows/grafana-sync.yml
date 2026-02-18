@@ -1,0 +1,120 @@
+name: Sync Grafana Cloud Resources
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'grafana/dashboards/**'
+      - 'grafana/alerts/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync_dashboards:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    name: Sync Custom Dashboards
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Check for dashboard files
+        id: check_dashboards
+        run: |
+          if ls grafana/dashboards/*.json 1> /dev/null 2>&1; then
+            echo "has_dashboards=true" >> $GITHUB_OUTPUT
+            echo "Found dashboard files to sync"
+          else
+            echo "has_dashboards=false" >> $GITHUB_OUTPUT
+            echo "No dashboard files found"
+          fi
+
+      - name: Sync dashboards to Grafana Cloud
+        if: steps.check_dashboards.outputs.has_dashboards == 'true'
+        run: |
+          echo "Syncing custom dashboards to Grafana Cloud..."
+          SUCCESS_COUNT=0
+          FAIL_COUNT=0
+          
+          for dashboard in grafana/dashboards/*.json; do
+            if [ -f "$dashboard" ]; then
+              FILENAME=$(basename "$dashboard")
+              echo "Uploading $FILENAME..."
+              
+              if curl -X POST \
+                -H "Authorization: Bearer ${{ secrets.GRAFANA_CLOUD_MANAGEMENT_TOKEN }}" \
+                -H "Content-Type: application/json" \
+                -d @"$dashboard" \
+                "https://grafana.com/api/dashboards/db" \
+                --silent --show-error --fail; then
+                echo "✓ Successfully uploaded $FILENAME"
+                SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+              else
+                echo "✗ Failed to upload $FILENAME"
+                FAIL_COUNT=$((FAIL_COUNT + 1))
+              fi
+            fi
+          done
+          
+          echo ""
+          echo "Dashboard sync complete: $SUCCESS_COUNT succeeded, $FAIL_COUNT failed"
+          
+          if [ $FAIL_COUNT -gt 0 ]; then
+            exit 1
+          fi
+
+  sync_alerts:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    name: Sync Custom Alert Rules
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Check for alert files
+        id: check_alerts
+        run: |
+          if ls grafana/alerts/*.json 1> /dev/null 2>&1; then
+            echo "has_alerts=true" >> $GITHUB_OUTPUT
+            echo "Found alert files to sync"
+          else
+            echo "has_alerts=false" >> $GITHUB_OUTPUT
+            echo "No alert files found"
+          fi
+
+      - name: Sync alert rules to Grafana Cloud
+        if: steps.check_alerts.outputs.has_alerts == 'true'
+        run: |
+          echo "Syncing custom alert rules to Grafana Cloud..."
+          SUCCESS_COUNT=0
+          FAIL_COUNT=0
+          
+          for alert in grafana/alerts/*.json; do
+            if [ -f "$alert" ]; then
+              FILENAME=$(basename "$alert")
+              echo "Uploading $FILENAME..."
+              
+              if curl -X POST \
+                -H "Authorization: Bearer ${{ secrets.GRAFANA_CLOUD_MANAGEMENT_TOKEN }}" \
+                -H "Content-Type: application/json" \
+                -d @"$alert" \
+                "https://grafana.com/api/v1/provisioning/alert-rules" \
+                --silent --show-error --fail; then
+                echo "✓ Successfully uploaded $FILENAME"
+                SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+              else
+                echo "✗ Failed to upload $FILENAME"
+                FAIL_COUNT=$((FAIL_COUNT + 1))
+              fi
+            fi
+          done
+          
+          echo ""
+          echo "Alert sync complete: $SUCCESS_COUNT succeeded, $FAIL_COUNT failed"
+          
+          if [ $FAIL_COUNT -gt 0 ]; then
+            exit 1
+          fi

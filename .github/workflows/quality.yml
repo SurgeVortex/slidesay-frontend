@@ -1,0 +1,73 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    name: Code Quality Checks
+    env:
+      RUN_E2E: false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+        continue-on-error: false
+
+      - name: Check formatting
+        run: npm run format:check
+        continue-on-error: false
+
+      - name: Run type checking
+        run: npm run type-check
+        continue-on-error: false
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Install Playwright Browsers
+        if: env.RUN_E2E == 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E tests
+        if: env.RUN_E2E == 'true'
+        run: npm run test:e2e
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v6
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v5
+        if: always()
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/coverage-final.json
+          flags: unittests
+          name: codecov-umbrella
+
+      - name: Security audit
+        run: npm run security:audit
+        continue-on-error: true

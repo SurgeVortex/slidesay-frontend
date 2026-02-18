@@ -1,0 +1,214 @@
+{
+  "dashboard": {
+    "title": "SRE Golden Signals - Frontend",
+    "tags": [
+      "frontend",
+      "sre",
+      "golden-signals"
+    ],
+    "timezone": "browser",
+    "schemaVersion": 38,
+    "version": 1,
+    "refresh": "30s",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Latency - Page Load Time (P95)",
+        "type": "graph",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 0
+        },
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(faro_page_load_duration_bucket[5m])) by (le))",
+            "legendFormat": "P95 Page Load",
+            "refId": "A"
+          },
+          {
+            "expr": "histogram_quantile(0.50, sum(rate(faro_page_load_duration_bucket[5m])) by (le))",
+            "legendFormat": "P50 Page Load",
+            "refId": "B"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "ms",
+            "label": "Latency"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Traffic - Requests Per Minute",
+        "type": "graph",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 0
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(faro_measurements_total[5m])) * 60",
+            "legendFormat": "Total Requests",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "short",
+            "label": "Requests/min"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Errors - Error Rate",
+        "type": "graph",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 8
+        },
+        "targets": [
+          {
+            "expr": "sum(rate(faro_errors_total[5m])) / sum(rate(faro_measurements_total[5m])) * 100",
+            "legendFormat": "Error Rate %",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "percent",
+            "label": "Error Rate"
+          }
+        ],
+        "alert": {
+          "conditions": [
+            {
+              "evaluator": {
+                "params": [
+                  5
+                ],
+                "type": "gt"
+              },
+              "operator": {
+                "type": "and"
+              },
+              "query": {
+                "params": [
+                  "A",
+                  "5m",
+                  "now"
+                ]
+              },
+              "reducer": {
+                "params": [],
+                "type": "avg"
+              },
+              "type": "query"
+            }
+          ],
+          "executionErrorState": "alerting",
+          "frequency": "1m",
+          "handler": 1,
+          "name": "High Error Rate Alert",
+          "noDataState": "no_data",
+          "notifications": []
+        }
+      },
+      {
+        "id": 4,
+        "title": "Saturation - Browser Memory Usage",
+        "type": "graph",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 8
+        },
+        "targets": [
+          {
+            "expr": "avg(faro_memory_used_bytes) / 1024 / 1024",
+            "legendFormat": "Avg Memory (MB)",
+            "refId": "A"
+          }
+        ],
+        "yaxes": [
+          {
+            "format": "decmbytes",
+            "label": "Memory"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Web Vitals - Core Web Vitals",
+        "type": "graph",
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 16
+        },
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.75, sum(rate(faro_web_vitals_lcp_bucket[5m])) by (le))",
+            "legendFormat": "LCP (Largest Contentful Paint)",
+            "refId": "A"
+          },
+          {
+            "expr": "histogram_quantile(0.75, sum(rate(faro_web_vitals_fid_bucket[5m])) by (le))",
+            "legendFormat": "FID (First Input Delay)",
+            "refId": "B"
+          },
+          {
+            "expr": "histogram_quantile(0.75, sum(rate(faro_web_vitals_cls_bucket[5m])) by (le))",
+            "legendFormat": "CLS (Cumulative Layout Shift)",
+            "refId": "C"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "title": "Error Types",
+        "type": "table",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 0,
+          "y": 24
+        },
+        "targets": [
+          {
+            "expr": "topk(10, sum(rate(faro_errors_total[5m])) by (error_type))",
+            "format": "table",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Geographic Distribution",
+        "type": "table",
+        "gridPos": {
+          "h": 8,
+          "w": 12,
+          "x": 12,
+          "y": 24
+        },
+        "targets": [
+          {
+            "expr": "topk(10, sum(rate(faro_measurements_total[5m])) by (country))",
+            "format": "table",
+            "refId": "A"
+          }
+        ]
+      }
+    ]
+  }
+}
