@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import './LandingPage.css';
@@ -191,7 +191,7 @@ export default function LandingPage() {
             </button>
           </div>
           <div className="ss-pricing-grid">
-            {pricingTiers.map((tier, idx) => {
+            {pricingTiers.map((tier) => {
               const isAnnual = annual && tier.priceAnnual > 0;
               const price = isAnnual ? tier.priceAnnual : tier.priceMonthly;
               const per = isAnnual ? '/yr' : '/mo';

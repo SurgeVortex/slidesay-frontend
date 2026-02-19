@@ -1,4 +1,4 @@
-import React from 'react';
+
 import PricingCards from '../components/PricingCards';
 import './PricingPage.css';
 

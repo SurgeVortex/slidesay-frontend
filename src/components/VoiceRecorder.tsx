@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { useVoiceRecorder, SlideTranscript } from '../hooks/useVoiceRecorder';
 
 interface VoiceRecorderProps {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import SlidePreview from '../components/SlidePreview';
 import SlideEditor from '../components/SlideEditor';
 import ExportButton from '../components/ExportButton';

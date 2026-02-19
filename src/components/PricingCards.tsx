@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const tiers = [
   { id: 'free', name: 'Free', priceMonthly: 0, priceAnnual: 0, features: ['5 presentations/month', '8 slides max', 'Browser preview', 'SlideSay branding'], cta: 'Get Started Free', href: '/record', highlight: false },
