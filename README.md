@@ -163,3 +163,4 @@ This template uses **MSAL React** for authentication:
 ## License
 
 MIT
+
