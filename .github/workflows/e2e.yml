@@ -13,7 +13,7 @@ permissions:
 jobs:
   test-e2e:
     timeout-minutes: 60
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: E2E Tests - ${{ matrix.project }}
     strategy:
       fail-fast: false

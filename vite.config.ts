@@ -56,11 +56,10 @@ export default defineConfig({
       ],
       include: ['src/**/*.{ts,tsx}'],
       thresholds: {
-        // Lowered for MVP — many pages added without tests. Raise as coverage improves.
-        lines: 30,
-        functions: 25,
-        branches: 25,
-        statements: 30,
+        lines: 70,
+        functions: 70,
+        branches: 60,
+        statements: 60,
       },
     },
   },

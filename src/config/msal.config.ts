@@ -23,8 +23,8 @@ export const msalConfig: Configuration = {
     authority: config.azure.tenantId
       ? `https://${config.azure.ciamDomain || 'isonet.casa'}.ciamlogin.com/${config.azure.tenantId}`
       : 'https://isonet.casa.ciamlogin.com/',
-    redirectUri: window.location.origin + '/welcome',
-    postLogoutRedirectUri: window.location.origin + '/login',
+    redirectUri: window.location.origin + '/auth/callback',
+    postLogoutRedirectUri: window.location.origin + '/',
     navigateToLoginRequestUrl: true,
   },
   cache: {

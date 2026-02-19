@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   quality:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: Code Quality Checks
     env:
       RUN_E2E: false

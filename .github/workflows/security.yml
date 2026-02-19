@@ -18,7 +18,7 @@ permissions:
 jobs:
   codeql:
     name: CodeQL Analysis
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       fail-fast: false
       matrix:
@@ -48,7 +48,7 @@ jobs:
 
   semgrep:
     name: Semgrep SAST (free)
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     container:
       image: semgrep/semgrep:latest
     # Run on pushes and PRs — provides a free and community-driven alternative
@@ -70,7 +70,7 @@ jobs:
 
   dependency-scan:
     name: Dependency Scan (free)
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout repository
@@ -94,7 +94,7 @@ jobs:
 
   secret-scanning:
     name: Secret Scanning
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -116,7 +116,7 @@ jobs:
 
   npm-audit:
     name: NPM Security Audit
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6

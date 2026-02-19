@@ -15,7 +15,7 @@ permissions:
 jobs:
   sync_dashboards:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: Sync Custom Dashboards
     steps:
       - name: Checkout code
@@ -68,7 +68,7 @@ jobs:
 
   sync_alerts:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: Sync Custom Alert Rules
     steps:
       - name: Checkout code
