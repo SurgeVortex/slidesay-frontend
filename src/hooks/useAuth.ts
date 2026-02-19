@@ -160,7 +160,7 @@ function useMsalAuth() {
 
   const getToken = async (): Promise<string | null> => {
     if (!account) return null;
-    return getAccessToken(instance, account);
+    return await getAccessToken(instance, account);
   };
 
   return { user, isAuthenticated, isLoading, login, logout, getToken };
@@ -184,4 +184,8 @@ function useDevAuth() {
   };
 }
 
+// Use module-scope env check to satisfy Rules of Hooks
 export const useAuth = import.meta.env.VITE_DEV_MODE === 'true' ? useDevAuth : useMsalAuth;
+
+// Export both for tests
+export { useMsalAuth, useDevAuth };

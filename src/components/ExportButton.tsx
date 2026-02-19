@@ -10,7 +10,7 @@ interface ExportButtonProps {
 export default function ExportButton({ format, presentationId, disabled }: ExportButtonProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const label = format === 'pptx' ? '📥 Export PPTX' : '📄 Export PDF';
+  const label = format === 'pptx' ? '\ud83d\udce5 Export PPTX' : '\ud83d\udcc4 Export PDF';
 
   const handleExport = async () => {
     if (!presentationId) return;
@@ -43,7 +43,7 @@ export default function ExportButton({ format, presentationId, disabled }: Expor
   return (
     <div style={{ display: 'inline-block' }}>
       <button
-        onClick={handleExport}
+        onClick={() => { void handleExport(); }}
         disabled={disabled || loading || !presentationId}
         style={{
           padding: '0.5rem 1rem',

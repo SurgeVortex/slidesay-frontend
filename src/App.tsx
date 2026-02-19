@@ -8,6 +8,7 @@ import RecordPage from './pages/RecordPage';
 import EditorPage from './pages/EditorPage';
 import LibraryPage from './pages/LibraryPage';
 import PricingPage from './pages/PricingPage';
+import ProfilePage from './pages/ProfilePage';
 
 function App() {
   const { user, isLoading } = useAuth();
@@ -31,6 +32,7 @@ function App() {
       <Route path="/record" element={user ? <RecordPage /> : <Navigate to="/login" />} />
       <Route path="/editor/:id" element={user ? <EditorPage /> : <Navigate to="/login" />} />
       <Route path="/library" element={user ? <LibraryPage /> : <Navigate to="/login" />} />
+      <Route path="/profile" element={user ? <ProfilePage /> : <Navigate to="/login" />} />
 
       {/* Catch-all: redirect based on auth */}
       <Route path="*" element={<Navigate to={user ? '/welcome' : '/login'} />} />

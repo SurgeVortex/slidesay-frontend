@@ -5,67 +5,54 @@ import './LibraryPage.css';
 interface Presentation {
   id: string;
   title: string;
-  slideCount: number;
-  createdAt: string;
+  slides: number;
+  created: string;
 }
 
-const mockPresentations: Presentation[] = [
-  { id: '1', title: 'English Grammar — Past Tense', slideCount: 8, createdAt: '2026-02-18T10:00:00Z' },
-  { id: '2', title: 'Team Standup Template', slideCount: 5, createdAt: '2026-02-17T14:30:00Z' },
-  { id: '3', title: 'Product Launch Pitch', slideCount: 12, createdAt: '2026-02-16T09:00:00Z' },
+const initialPresentations: Presentation[] = [
+  { id: 'abc123', title: 'Welcome to SlideSay', slides: 8, created: '2026-02-01' },
+  { id: 'def456', title: 'AI for Educators', slides: 12, created: '2026-01-28' },
+  { id: 'ghi789', title: 'Quarterly Report', slides: 10, created: '2026-02-15' }
 ];
 
 export default function LibraryPage() {
+  const [presentations, setPresentations] = useState<Presentation[]>(initialPresentations);
   const navigate = useNavigate();
-  const [presentations, setPresentations] = useState<Presentation[]>(mockPresentations);
 
   const handleDelete = (id: string) => {
-    if (window.confirm('Delete this presentation? This cannot be undone.')) {
-      setPresentations((prev) => prev.filter((p) => p.id !== id));
+    if (window.confirm('Delete this presentation?')) {
+      setPresentations(prev => prev.filter(p => p.id !== id));
     }
   };
 
-  const formatDate = (iso: string) => {
-    const d = new Date(iso);
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-  };
+  if (presentations.length === 0) {
+    return (
+      <div className="library-empty">
+        <h2>Your library is empty</h2>
+        <p>Create your first presentation:</p>
+        <Link className="library-create-btn" to="/record">Create New</Link>
+      </div>
+    );
+  }
 
   return (
-    <div className="library-page">
+    <div className="library-wrapper">
       <div className="library-header">
-        <h1>My Presentations</h1>
-        <Link to="/record" className="btn-create">+ Create New</Link>
+        <h2>Your Presentations</h2>
+        <Link className="library-create-btn" to="/record">Create New</Link>
       </div>
-
-      {presentations.length === 0 ? (
-        <div className="library-empty">
-          <p style={{ fontSize: '3rem', margin: '0 0 1rem' }}>📝</p>
-          <h2>No presentations yet</h2>
-          <p>Create your first one by recording your voice.</p>
-          <Link to="/record" className="btn-create">Create Presentation</Link>
-        </div>
-      ) : (
-        <div className="library-grid">
-          {presentations.map((p) => (
-            <div key={p.id} className="library-card" onClick={() => navigate(`/editor/${p.id}`)}>
-              <div className="card-thumb">
-                <span style={{ fontSize: '2rem' }}>📊</span>
-              </div>
-              <div className="card-body">
-                <h3 className="card-title">{p.title}</h3>
-                <p className="card-meta">{p.slideCount} slides · {formatDate(p.createdAt)}</p>
-              </div>
-              <button
-                className="card-delete"
-                onClick={(e) => { e.stopPropagation(); handleDelete(p.id); }}
-                title="Delete"
-              >
-                🗑
-              </button>
+      <div className="library-grid">
+        {presentations.map(p => (
+          <div key={p.id} className="library-card" onClick={() => { void navigate(`/editor/${p.id}`); }}>
+            <div className="library-card-content">
+              <h3>{p.title}</h3>
+              <p>{p.slides} slides</p>
+              <p className="library-date">Created: {p.created}</p>
             </div>
-          ))}
-        </div>
-      )}
+            <button className="library-delete-btn" onClick={e => { e.stopPropagation(); handleDelete(p.id); }}>Delete</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

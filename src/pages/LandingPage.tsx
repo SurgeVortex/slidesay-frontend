@@ -246,7 +246,7 @@ export default function LandingPage() {
             <h1 className="ss-hero-title gradient-text">Say it. Slide it. Ship it.</h1>
             <p className="ss-hero-desc">Turn your voice into professional presentations in seconds.<br />Just talk — AI does the rest.</p>
             <div className="ss-hero-ctas">
-              <button className="ss-cta ss-cta-primary" onClick={() => navigate('/record')}>
+              <button className="ss-cta ss-cta-primary" onClick={() => void navigate('/record')}>
                 Start Creating — Free
               </button>
               <button className="ss-cta ss-cta-secondary" onClick={handleScrollToPricing}>
@@ -269,12 +269,12 @@ export default function LandingPage() {
                     <span className="ss-mockup-label">Recording...</span>
                   </div>
                   <div className="ss-mockup-wave">
-                    {[...Array(12)].map((_, i) => (
+                    {Array.from({length: 12}).map((_, i) => (
                       <span key={i} className="ss-mockup-wave-bar" />
                     ))}
                   </div>
                   <div className="ss-mockup-transcript">
-                    <span className="ss-transcript-line">"Today we'll cover three key strategies for...</span>
+                    <span className="ss-transcript-line">&ldquo;Today we&apos;ll cover three key strategies for...</span>
                   </div>
                 </div>
                 {/* Arrow */}
@@ -452,7 +452,7 @@ export default function LandingPage() {
                   </ul>
                   <button
                     className={`ss-card-cta${tier.highlighted ? ' main' : ''}`}
-                    onClick={() => navigate('/login')}
+                    onClick={() => void navigate('/login')}
                   >
                     {tier.cta}
                   </button>
@@ -480,7 +480,7 @@ export default function LandingPage() {
             <div className="ss-faq-item">
               <h3 className="ss-faq-question">Do I need to write anything?</h3>
               <p className="ss-faq-answer">
-                No! That's the beauty of SlideSay. Just talk naturally about your topic as if you're explaining 
+                No! That&apos;s the beauty of SlideSay. Just talk naturally about your topic as if you&apos;re explaining 
                 it to someone. Our AI handles all the structuring, formatting, and slide creation automatically.
               </p>
             </div>
@@ -499,7 +499,7 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="ss-faq-item">
-              <h3 className="ss-faq-question">Can I edit the slides after they're generated?</h3>
+              <h3 className="ss-faq-question">Can I edit the slides after they&apos;re generated?</h3>
               <p className="ss-faq-answer">
                 Yes! Once generated, you can download the PowerPoint file and edit it in Microsoft PowerPoint, 
                 Google Slides, or any compatible presentation software. The AI creates a great starting point 

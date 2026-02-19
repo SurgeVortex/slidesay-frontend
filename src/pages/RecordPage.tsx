@@ -1,70 +1,61 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import VoiceRecorder from '../components/VoiceRecorder';
 import { SlideTranscript } from '../hooks/useVoiceRecorder';
-import { generatePresentation } from '../utils/api';
+import '../types/speech';
 import './RecordPage.css';
 
-export default function RecordPage() {
+const RecordPage: React.FC = () => {
+  const [slides, setSlides] = useState<SlideTranscript[]>([]);
+  const [speechSupported, setSpeechSupported] = useState<boolean>(true);
   const navigate = useNavigate();
-  const [slides, setSlides] = React.useState<SlideTranscript[]>([]);
-  const [isGenerating, setIsGenerating] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
 
-  const handleSlidesReady = (recordedSlides: SlideTranscript[]) => {
-    setSlides(recordedSlides);
+  // VoiceRecorder is responsible for speech API check
+  const handleSlidesReady = (rSlides: SlideTranscript[]) => {
+    setSlides(rSlides);
   };
 
-  const handleDone = async () => {
-    setIsGenerating(true);
-    setError(null);
-    
-    // Combine all slide transcripts into one string
-    const fullTranscript = slides.map(s => s.text).join('\n\n');
-    
-    try {
-      const result = await generatePresentation(fullTranscript);
-      if (result.data) {
-        navigate(`/editor/${result.data.id}`);
-      } else if (result.error) {
-        setError(result.error.error || 'Failed to generate presentation');
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
-    } finally {
-      setIsGenerating(false);
-    }
+  // Detect speech support on mount
+  React.useEffect(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    setSpeechSupported(!!SpeechRecognition);
+  }, []);
+
+  const handleNewSlide = () => {
+    // Manual new slide action: handled via ref in hook, so just reload slides
+    // For MVP, refresh by toggling VoiceRecorder or extend with a controller prop
+    void window.location.reload(); // Add void for ESLint floating promise
+  };
+
+  const handleDone = () => {
+    void navigate('/library');
   };
 
   return (
-    <div className="record-page">
-      <h1>Create Your Presentation</h1>
-      <p className="record-subtitle">
-        Talk through your presentation naturally. Say &quot;next slide&quot; to start a new slide, or use the button below.
-      </p>
-
+    <div className="record-page-container">
+      <h1 className="page-title">Create Your Presentation</h1>
       <VoiceRecorder onSlidesReady={handleSlidesReady} />
-
-      {error && (
-        <div className="record-error">
-          <p>⚠️ {error}</p>
+      <div className="slides-panel">
+        <div className="slides-header">Slides</div>
+        <ol className="slides-list">
+          {slides.map(slide => (
+            <li className="slide-card" key={slide.index}>
+              <span className="slide-index">Slide {slide.index}:</span> <span className="slide-text">{slide.text}</span>
+            </li>
+          ))}
+        </ol>
+        <div className="slides-actions">
+          <button className="new-slide-btn" onClick={() => { void handleNewSlide(); }}>New Slide</button>
+          <button className="done-btn" onClick={handleDone} disabled={slides.length === 0}>Done  Create Presentation</button>
         </div>
-      )}
-
-      {slides.length > 0 && (
-        <div className="record-actions">
-          <button 
-            className="done-btn" 
-            onClick={handleDone}
-            disabled={isGenerating}
-          >
-            {isGenerating 
-              ? '⏳ Generating presentation...' 
-              : `Done — Create Presentation (${slides.length} slides)`
-            }
-          </button>
-        </div>
-      )}
+        {!speechSupported && (
+          <div className="speech-support-warning">
+            Your browser does not support speech recognition. Please use Chrome or Edge for voice recording.
+          </div>
+        )}
+      </div>
     </div>
   );
-}
+};
+
+export default RecordPage;

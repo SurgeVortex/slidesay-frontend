@@ -139,7 +139,39 @@ export async function getUserProfile() {
     isActive: boolean;
     createdAt: string;
     lastLoginAt: string;
+    tier?: string;
   }>('/api/user/profile');
+}
+
+/**
+ * Update user profile
+ */
+export async function updateUserProfile(data: { displayName?: string; email?: string }) {
+  return apiRequest<{
+    id: string;
+    userId: string;
+    email: string;
+    displayName: string;
+    isActive: boolean;
+    createdAt: string;
+    lastLoginAt: string;
+    tier?: string;
+  }>('/api/user/profile', {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
+/**
+ * Get user usage/limits (profile page dashboard)
+ */
+export async function getUserUsage() {
+  return apiRequest<{
+    presentationsThisMonth: number;
+    monthlyPresentationLimit: number;
+    slidesThisMonth: number;
+    monthlySlideLimit: number;
+  }>('/api/user/usage');
 }
 
 /**

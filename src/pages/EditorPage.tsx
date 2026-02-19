@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import SlidePreview from '../components/SlidePreview';
 import SlideEditor from '../components/SlideEditor';
 import ExportButton from '../components/ExportButton';
+import { getPresentation } from '../utils/api';
 import './EditorPage.css';
 
 interface Slide {
@@ -12,17 +14,56 @@ interface Slide {
   notes?: string;
 }
 
-const sampleSlides: Slide[] = [
-  { type: 'title', title: 'My Presentation', subtitle: 'Created with SlideSay', notes: '' },
-  { type: 'content', title: 'Introduction', bullets: ['Point one', 'Point two', 'Point three'], notes: 'Introduce the topic' },
-  { type: 'content', title: 'Details', bullets: ['Detail A', 'Detail B'], notes: '' },
-  { type: 'section', title: 'Questions?', notes: '' },
-];
-
 export default function EditorPage() {
-  const [slides, setSlides] = useState<Slide[]>(sampleSlides);
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const [slides, setSlides] = useState<Slide[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [title, setTitle] = useState('My Presentation');
+  const [title, setTitle] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!id) {
+      return;
+    }
+
+    const loadPresentation = async () => {
+      const result = await getPresentation(id);
+      if (result.data) {
+        setTitle(result.data.title || 'Untitled');
+        setSlides(result.data.slides || []);
+      } else {
+        setError(result.error?.error || 'Failed to load presentation');
+      }
+      setLoading(false);
+    };
+
+    void loadPresentation();
+  }, [id]);
+
+  if (!id) {
+    return <div>No presentation ID provided</div>;
+  }
+
+  if (loading) {
+    return (
+      <div className="editor-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+        <p> Loading presentation...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="editor-page" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+        <p> {error}</p>
+        <button onClick={() => { void navigate('/library'); }} style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}>
+          Back to Library
+        </button>
+      </div>
+    );
+  }
 
   const updateSlide = (updated: Slide) => {
     const newSlides = [...slides];
@@ -53,11 +94,10 @@ export default function EditorPage() {
           placeholder="Presentation title..."
         />
         <div className="editor-topbar-actions">
-          <ExportButton format="pptx" />
-          <ExportButton format="pdf" />
+          <ExportButton format="pptx" presentationId={id} />
+          <ExportButton format="pdf" presentationId={id} />
         </div>
       </div>
-
       <div className="editor-layout">
         <div className="editor-sidebar">
           <h3 style={{ margin: '0 0 0.75rem', fontSize: '0.9rem', color: '#6b7280' }}>Slides</h3>
@@ -74,15 +114,13 @@ export default function EditorPage() {
           <div className="sidebar-actions">
             <button className="btn-add-slide" onClick={addSlide}>+ Add Slide</button>
             <button className="btn-delete-slide" onClick={deleteSlide} disabled={slides.length <= 1}>
-              🗑 Delete
+               Delete
             </button>
           </div>
         </div>
-
         <div className="editor-preview">
           <SlidePreview slides={slides} currentSlide={currentSlide} onSlideChange={setCurrentSlide} />
         </div>
-
         <div className="editor-panel">
           <h3 style={{ margin: '0 0 0.5rem', fontSize: '0.9rem', color: '#6b7280' }}>Edit Slide</h3>
           {slides[currentSlide] && (

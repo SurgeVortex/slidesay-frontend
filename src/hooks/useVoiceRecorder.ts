@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
+import '../types/speech';
 
 export interface SlideTranscript {
   index: number;
@@ -20,8 +21,7 @@ export interface UseVoiceRecorderReturn {
 
 export function useVoiceRecorder(): UseVoiceRecorderReturn {
   const SpeechRecognitionAPI =
-    (window as unknown as Record<string, unknown>).SpeechRecognition ||
-    (window as unknown as Record<string, unknown>).webkitSpeechRecognition;
+    window.SpeechRecognition || window.webkitSpeechRecognition;
   const isSupported = !!SpeechRecognitionAPI;
 
   const [isRecording, setIsRecording] = useState(false);
@@ -29,8 +29,7 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
   const [interimTranscript, setInterimTranscript] = useState('');
   const [slides, setSlides] = useState<SlideTranscript[]>([]);
   const [error, setError] = useState<string | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const currentTranscriptRef = useRef('');
 
   const newSlide = useCallback(() => {
@@ -51,22 +50,21 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
       return;
     }
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const recognition = new (SpeechRecognitionAPI as any)();
+      const recognition: SpeechRecognitionInstance = new (SpeechRecognitionAPI as any)();
       recognition.continuous = true;
       recognition.interimResults = true;
       recognition.lang = 'en-US';
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      recognition.onresult = (event: any) => {
+      recognition.onresult = (event: SpeechRecognitionEvent) => {
         let interim = '';
         let final = '';
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const result = event.results[i];
+          if (!result) continue;
           if (result.isFinal) {
-            final += result[0].transcript;
+            final += result[0]?.transcript ?? '';
           } else {
-            interim += result[0].transcript;
+            interim += result[0]?.transcript ?? '';
           }
         }
         if (final) {
@@ -90,8 +88,7 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
         setInterimTranscript(interim);
       };
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      recognition.onerror = (event: any) => {
+      recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
         if (event.error === 'not-allowed')
           setError('Microphone access denied. Please allow microphone access in your browser settings.');
         else if (event.error === 'no-speech')
