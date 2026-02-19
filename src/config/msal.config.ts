@@ -19,7 +19,7 @@ import { config } from './app.config';
 export const msalConfig: Configuration = {
   auth: {
     clientId: config.azure.clientId || '',
-    authority: `https://login.microsoftonline.com/${config.azure.tenantId}`,
+    authority: `https://login.microsoftonline.com/${config.azure.tenantId || 'common'}`,
     redirectUri: window.location.origin + '/welcome',
     postLogoutRedirectUri: window.location.origin + '/login',
     navigateToLoginRequestUrl: true,
