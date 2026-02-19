@@ -1,8 +1,49 @@
-
+import React, { useState } from 'react';
 import PricingCards from '../components/PricingCards';
 import './PricingPage.css';
 
+function openStripeCheckout(email?: string) {
+  fetch('/api/stripe/checkout', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      email,
+      success_url: window.location.origin + '/success',
+      cancel_url: window.location.origin + '/pricing'
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.checkout_url) {
+        window.location.href = data.checkout_url;
+      } else {
+        alert(data.error || 'Failed to open Stripe Checkout');
+      }
+    });
+}
+
+function openCustomerPortal(customerId: string) {
+  fetch('/api/stripe/customer-portal', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      customer_id: customerId,
+      return_url: window.location.origin + '/pricing'
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.portal_url) {
+        window.location.href = data.portal_url;
+      } else {
+        alert(data.error || 'Failed to open Stripe Customer Portal');
+      }
+    });
+}
+
 export default function PricingPage() {
+  const [customerId, setCustomerId] = useState(''); // If user is logged in and has Stripe customer ID
+
   return (
     <div className="pricing-page">
       <h1>Simple, Transparent Pricing</h1>
@@ -43,6 +84,11 @@ export default function PricingPage() {
         <h2>Ready to create?</h2>
         <p>Start making presentations with your voice — it&apos;s free.</p>
         <a href="/record" className="pricing-cta-btn">Start Creating — Free</a>
+        <br />
+        <button className="pricing-cta-btn" onClick={() => openStripeCheckout()}>Upgrade — Educator/Pro</button>
+        <br />
+        <input placeholder="Your Stripe Customer ID" value={customerId} onChange={e => setCustomerId(e.target.value)} />
+        <button className="pricing-cta-btn" onClick={() => openCustomerPortal(customerId)}>Manage Subscription</button>
       </div>
     </div>
   );
