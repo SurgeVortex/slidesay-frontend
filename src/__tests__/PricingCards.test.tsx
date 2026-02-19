@@ -6,12 +6,13 @@ import PricingCards from '../components/PricingCards';
 describe('PricingCards', () => {
   it('renders pricing tiers', () => {
     render(<PricingCards showToggle={false} />);
-    expect(screen.getByText(/free/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Free/i).length).toBeGreaterThan(0);
+    expect(screen.getByText('Educator')).toBeInTheDocument();
+    expect(screen.getByText('Pro')).toBeInTheDocument();
   });
 
   it('renders with toggle', () => {
     render(<PricingCards showToggle={true} />);
-    // Should render without crashing with toggle enabled
-    expect(screen.getByText(/free/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Free/i).length).toBeGreaterThan(0);
   });
 });

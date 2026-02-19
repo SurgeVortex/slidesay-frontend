@@ -31,10 +31,11 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
   const currentTranscriptRef = useRef('');
 
   const newSlide = useCallback(() => {
-    if (currentTranscriptRef.current.trim()) {
+    const pendingText = currentTranscriptRef.current.trim();
+    if (pendingText) {
       setSlides((prev) => [
         ...prev,
-        { index: prev.length + 1, text: currentTranscriptRef.current.trim() },
+        { index: prev.length + 1, text: pendingText },
       ]);
       currentTranscriptRef.current = '';
       setTranscript('');
@@ -71,10 +72,11 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
           if (lower.includes('next slide') || lower.includes('new slide')) {
             const cleaned = final.replace(/next slide|new slide/gi, '').trim();
             if (cleaned) currentTranscriptRef.current += ' ' + cleaned;
-            if (currentTranscriptRef.current.trim()) {
+            const pendingText = currentTranscriptRef.current.trim();
+            if (pendingText) {
               setSlides((prev) => [
                 ...prev,
-                { index: prev.length + 1, text: currentTranscriptRef.current.trim() },
+                { index: prev.length + 1, text: pendingText },
               ]);
               currentTranscriptRef.current = '';
             }
@@ -115,10 +117,11 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
       recognitionRef.current.stop();
       recognitionRef.current = null;
     }
-    if (currentTranscriptRef.current.trim()) {
+    const pendingText = currentTranscriptRef.current.trim();
+    if (pendingText) {
       setSlides((prev) => [
         ...prev,
-        { index: prev.length + 1, text: currentTranscriptRef.current.trim() },
+        { index: prev.length + 1, text: pendingText },
       ]);
       currentTranscriptRef.current = '';
       setTranscript('');
