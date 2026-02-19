@@ -1,7 +1,8 @@
 import { type AccountInfo, type IPublicClientApplication } from '@azure/msal-browser';
 import { useAccount, useMsal } from '@azure/msal-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { config } from '../config/app.config';
+import { loginRequest } from '../config/msal.config';
 
 export interface UserInfo {
   userId: string;
@@ -27,17 +28,11 @@ interface BackendUserResponse {
   isNewUser: boolean;
 }
 
-/**
- * Get access token from MSAL
- */
-async function getAccessToken(
-  instance: IPublicClientApplication,
-  account: AccountInfo,
-): Promise<string | null> {
+async function getAccessToken(instance: IPublicClientApplication, account: AccountInfo): Promise<string | null> {
   try {
     const response = await instance.acquireTokenSilent({
-      scopes: ['User.Read'],
-      account: account,
+      ...loginRequest,
+      account
     });
     return response.accessToken;
   } catch (error) {
@@ -46,9 +41,6 @@ async function getAccessToken(
   }
 }
 
-/**
- * Authenticate with backend using JWT token
- */
 async function authenticateWithBackend(token: string): Promise<BackendUserResponse | null> {
   try {
     const response = await fetch(`${config.apiUrl}/api/auth/login`, {
@@ -62,23 +54,19 @@ async function authenticateWithBackend(token: string): Promise<BackendUserRespon
         language: navigator.language,
       }),
     });
-
     if (response.status === 401) {
       console.error('Backend authentication failed: Invalid or expired token');
       return null;
     }
-
     if (response.status === 429) {
       console.warn('Rate limit exceeded, will retry later');
       return null;
     }
-
     if (!response.ok) {
       const error: unknown = await response.json().catch(() => ({ error: 'Unknown error' }));
       console.error('Backend authentication failed:', error);
       return null;
     }
-
     const data: unknown = await response.json();
     return data as BackendUserResponse;
   } catch (error) {
@@ -87,34 +75,42 @@ async function authenticateWithBackend(token: string): Promise<BackendUserRespon
   }
 }
 
-/**
- * useAuth hook - Uses MSAL for authentication
- *
- * This hook integrates with Microsoft Authentication Library (MSAL)
- * to provide authentication state and user information.
- */
 function useMsalAuth() {
   const { instance, accounts, inProgress } = useMsal();
   const account = useAccount(accounts[0] || undefined);
   const [user, setUser] = useState<UserInfo | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Login wrapper
+  const login = useCallback(async () => {
+    await instance.loginRedirect(loginRequest);
+  }, [instance]);
+
+  // Logout wrapper
+  const logout = useCallback(() => {
+    instance.logoutRedirect();
+  }, [instance]);
+
+  const getToken = useCallback(async () => {
+    if (account) {
+      return await getAccessToken(instance, account);
+    }
+    return null;
+  }, [account, instance]);
 
   useEffect(() => {
     async function processUser() {
-      // Wait for MSAL to finish initializing
       if (inProgress !== 'none') {
         setIsLoading(true);
         return;
       }
-
-      // No authenticated user
       if (!account) {
         setUser(null);
+        setIsAuthenticated(false);
         setIsLoading(false);
         return;
       }
-
-      // Convert MSAL account to UserInfo format
       const userInfo: UserInfo = {
         userId: account.localAccountId,
         userDetails: account.username,
@@ -123,32 +119,24 @@ function useMsalAuth() {
         displayName: account.name || account.username,
         email: account.username,
       };
-
       setUser(userInfo);
+      setIsAuthenticated(true);
       setIsLoading(false);
-
-      // Authenticate with backend using access token
+      // Backend authentication (optional)
       const token = await getAccessToken(instance, account);
       if (token) {
         const backendResponse = await authenticateWithBackend(token);
         if (backendResponse?.success) {
-          console.log(
-            backendResponse.isNewUser
-              ? 'New user registered in backend'
-              : 'User authenticated with backend',
-          );
+          // Backend sync logged
         } else {
-          console.warn('Backend authentication failed, but user is authenticated with MSAL');
+          // Backend sync failed, but don't force logout for now
         }
-      } else {
-        console.warn('Could not obtain access token for backend authentication');
       }
     }
-
     void processUser();
   }, [account, inProgress, instance]);
 
-  return { user, isLoading };
+  return { user, isAuthenticated, isLoading, login, logout, getToken };
 }
 
 function useDevAuth() {
@@ -161,7 +149,11 @@ function useDevAuth() {
       displayName: 'Dev User',
       email: 'dev@test.com',
     } as UserInfo,
+    isAuthenticated: true,
     isLoading: false,
+    login: async () => {},
+    logout: () => {},
+    getToken: async () => 'dev-token',
   };
 }
 

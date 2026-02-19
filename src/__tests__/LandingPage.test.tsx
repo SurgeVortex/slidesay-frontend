@@ -55,7 +55,8 @@ describe('LandingPage', () => {
     await user.click(annual);
     expect(monthly).toHaveAttribute('aria-pressed', 'false');
     expect(annual).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByText(/save/i)).toBeInTheDocument();
+    // Check for the "Save 33%" text specifically in the annual button
+    expect(screen.getByText(/save 33%/i)).toBeInTheDocument();
   });
 
   it('SEO helmet component renders without error', () => {
