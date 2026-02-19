@@ -148,7 +148,22 @@ function useMsalAuth() {
     void processUser();
   }, [account, inProgress, instance]);
 
-  return { user, isLoading };
+  const isAuthenticated = !!user;
+
+  const login = () => {
+    void instance.loginRedirect({ scopes: ['User.Read'] });
+  };
+
+  const logout = () => {
+    void instance.logoutRedirect();
+  };
+
+  const getToken = async (): Promise<string | null> => {
+    if (!account) return null;
+    return getAccessToken(instance, account);
+  };
+
+  return { user, isAuthenticated, isLoading, login, logout, getToken };
 }
 
 function useDevAuth() {
@@ -161,7 +176,11 @@ function useDevAuth() {
       displayName: 'Dev User',
       email: 'dev@test.com',
     } as UserInfo,
+    isAuthenticated: true,
     isLoading: false,
+    login: () => {},
+    logout: () => {},
+    getToken: async () => 'dev-token',
   };
 }
 

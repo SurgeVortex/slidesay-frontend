@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import * as msalReact from '@azure/msal-react';
 import * as msalBrowser from '@azure/msal-browser';
-import { useAuth, UserInfo } from './useAuth';
+import { useAuth } from './useAuth';
 import { renderHook, act } from '@testing-library/react';
 
 vi.mock('@azure/msal-react', async () => {

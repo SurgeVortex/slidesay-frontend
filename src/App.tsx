@@ -10,7 +10,7 @@ import LibraryPage from './pages/LibraryPage';
 import PricingPage from './pages/PricingPage';
 
 function App() {
-  const { user, isAuthenticated, isLoading, login } = useAuth();
+  const { user, isLoading } = useAuth();
 
   if (isLoading) {
     return <LoadingPage />;
