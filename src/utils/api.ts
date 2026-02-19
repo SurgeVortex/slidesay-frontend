@@ -149,3 +149,20 @@ export async function checkHealth() {
     services: Record<string, string>;
   }>('/api/health');
 }
+
+/**
+ * Generate a presentation from voice transcript
+ */
+export async function generatePresentation(transcript: string, title?: string) {
+  return apiRequest<{
+    id: string;
+    title: string;
+    slides: Array<{ title: string; content: string[] }>;
+    transcript: string;
+    createdAt: string;
+  }>('/api/presentations', {
+    method: 'POST',
+    body: JSON.stringify({ transcript, title: title || '', slides: null }),
+  });
+}
+
