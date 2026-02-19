@@ -49,6 +49,7 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
       return;
     }
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-explicit-any
       const recognition: SpeechRecognitionInstance = new (SpeechRecognitionAPI as any)();
       recognition.continuous = true;
       recognition.interimResults = true;

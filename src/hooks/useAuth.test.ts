@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/require-await, @typescript-eslint/await-thenable, @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi } from 'vitest';
 import * as msalReact from '@azure/msal-react';
 import * as msalBrowser from '@azure/msal-browser';

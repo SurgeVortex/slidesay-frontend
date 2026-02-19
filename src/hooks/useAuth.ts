@@ -180,7 +180,7 @@ function useDevAuth() {
     isLoading: false,
     login: () => {},
     logout: () => {},
-    getToken: async () => 'dev-token',
+    getToken: () => Promise.resolve('dev-token'),
   };
 }
 
