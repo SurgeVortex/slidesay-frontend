@@ -63,7 +63,7 @@ describe('useVoiceRecorder', () => {
     act(() => latestRecognition.onresult(makeSpeechEvent('Slide content')));
     act(() => result.current.stopRecording());
     expect(result.current.slides).toHaveLength(1);
-    expect(result.current.slides[0].text).toContain('Slide content');
+    expect(result.current.slides[0]!.text).toContain('Slide content');
   });
 
   it('creates new slide via newSlide()', () => {
@@ -72,7 +72,7 @@ describe('useVoiceRecorder', () => {
     act(() => latestRecognition.onresult(makeSpeechEvent('First slide')));
     act(() => result.current.newSlide());
     expect(result.current.slides).toHaveLength(1);
-    expect(result.current.slides[0].text).toBe('First slide');
+    expect(result.current.slides[0]!.text).toBe('First slide');
     expect(result.current.transcript).toBe('');
   });
 
@@ -82,7 +82,7 @@ describe('useVoiceRecorder', () => {
     act(() => latestRecognition.onresult(makeSpeechEvent('Some content')));
     act(() => latestRecognition.onresult(makeSpeechEvent('next slide')));
     expect(result.current.slides).toHaveLength(1);
-    expect(result.current.slides[0].text).toContain('Some content');
+    expect(result.current.slides[0]!.text).toContain('Some content');
   });
 
   it('handles not-allowed error', () => {

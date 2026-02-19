@@ -11,7 +11,7 @@ vi.mock('../utils/api', () => ({
 
 // Mock components used by EditorPage
 vi.mock('../components/SlidePreview', () => ({
-  default: ({ slides, currentSlide, onSlideChange }: { slides: unknown[]; currentSlide: number; onSlideChange: (i: number) => void }) => (
+  default: ({ currentSlide, onSlideChange }: { slides: unknown[]; currentSlide: number; onSlideChange: (i: number) => void }) => (
     <div data-testid="slide-preview" onClick={() => onSlideChange(0)}>Preview: slide {currentSlide}</div>
   ),
 }));

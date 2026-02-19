@@ -33,7 +33,7 @@ describe('LibraryPage', () => {
     vi.spyOn(window, 'confirm').mockReturnValue(true);
     render(<MemoryRouter><LibraryPage /></MemoryRouter>);
     const deleteBtns = screen.getAllByText('Delete');
-    fireEvent.click(deleteBtns[0]);
+    fireEvent.click(deleteBtns[0]!);
     expect(screen.queryByText('Welcome to SlideSay')).not.toBeInTheDocument();
   });
 
@@ -41,7 +41,7 @@ describe('LibraryPage', () => {
     vi.spyOn(window, 'confirm').mockReturnValue(false);
     render(<MemoryRouter><LibraryPage /></MemoryRouter>);
     const deleteBtns = screen.getAllByText('Delete');
-    fireEvent.click(deleteBtns[0]);
+    fireEvent.click(deleteBtns[0]!);
     expect(screen.getByText('Welcome to SlideSay')).toBeInTheDocument();
   });
 

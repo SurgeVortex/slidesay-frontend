@@ -7,7 +7,6 @@ const mockFetch = vi.fn();
 global.fetch = mockFetch;
 
 // Mock window.location
-const originalLocation = window.location;
 
 import PricingPage from '../pages/PricingPage';
 
