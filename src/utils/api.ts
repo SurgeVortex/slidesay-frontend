@@ -188,9 +188,35 @@ export async function updatePresentation(id: string, data: { title?: string; sli
     id: string;
     title: string;
     slides: Array<{ type: string; title: string; bullets?: string[]; subtitle?: string; notes?: string }>;
-  }>(`/api/presentations/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  });
+  }>(`/api/presentations/${id}`,
+    {
+      method: 'PUT',
+      body: JSON.stringify(data),
+    }
+  );
 }
 
+/**
+ * Export a presentation as PPTX or PDF
+ * Returns a Blob for download, or null on error
+ */
+export async function exportPresentation(id: string, format: 'pptx' | 'pdf'): Promise<Blob | null> {
+  const token = await getAccessToken();
+  if (!token) return null;
+
+  try {
+    const response = await fetch(`${config.apiUrl}/api/presentations/${id}/export`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ format }),
+    });
+
+    if (!response.ok) return null;
+    return await response.blob();
+  } catch {
+    return null;
+  }
+}
