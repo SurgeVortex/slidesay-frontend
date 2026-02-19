@@ -19,7 +19,10 @@ import { config } from './app.config';
 export const msalConfig: Configuration = {
   auth: {
     clientId: config.azure.clientId || '',
-    authority: `https://login.microsoftonline.com/${config.azure.tenantId || 'common'}`,
+    // CIAM (External ID) tenants use ciamlogin.com, NOT login.microsoftonline.com
+    authority: config.azure.tenantId
+      ? `https://${config.azure.ciamDomain || 'isonet.casa'}.ciamlogin.com/${config.azure.tenantId}`
+      : 'https://isonet.casa.ciamlogin.com/',
     redirectUri: window.location.origin + '/welcome',
     postLogoutRedirectUri: window.location.origin + '/login',
     navigateToLoginRequestUrl: true,

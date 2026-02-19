@@ -20,6 +20,7 @@ export const config = {
     clientId: import.meta.env.VITE_AZURE_CLIENT_ID,
     tenantId: import.meta.env.VITE_AZURE_TENANT_ID,
     apiScope: import.meta.env.VITE_AZURE_API_SCOPE,
+    ciamDomain: import.meta.env.VITE_AZURE_CIAM_DOMAIN || 'isonet.casa',
   },
 
   // Monitoring & Observability (Public - client-side monitoring)
