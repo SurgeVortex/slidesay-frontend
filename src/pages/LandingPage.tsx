@@ -107,7 +107,7 @@ export default function LandingPage() {
 
       <main className="ss-main" role="main">
         {/* HERO SECTION */}
-        <section className="ss-hero" style={{background:"linear-gradient(110deg,#6366f1 0%,#3b82f6 52%,#06b6d4 100%)"}}>
+        <section className="ss-hero">
           <div className="ss-hero-content">
             <h1 className="ss-hero-title gradient-text">Say it. Slide it. Ship it.</h1>
             <p className="ss-hero-desc">Turn your voice into professional presentations in seconds.<br />Just talk — AI does the rest.</p>
@@ -119,12 +119,29 @@ export default function LandingPage() {
                 See Pricing
               </button>
             </div>
+
+            {/* Product mockup */}
+            <div className="ss-hero-mockup">
+              <div className="ss-mockup-bar">
+                <span className="ss-mockup-dot" />
+                <span className="ss-mockup-dot" />
+                <span className="ss-mockup-dot" />
+              </div>
+              <div className="ss-mockup-body">
+                <div className="ss-mockup-wave">
+                  {[...Array(10)].map((_, i) => (
+                    <span key={i} className="ss-mockup-wave-bar" />
+                  ))}
+                </div>
+                <span className="ss-mockup-label">Recording...</span>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* HOW IT WORKS */}
         <section className="ss-howitworks">
-          <h2 className="ss-step-title">How it works</h2>
+          <h2 className="ss-step-title gradient-text">How it works</h2>
           <div className="ss-steps">
             <div className="ss-step-card">
               <span className="ss-step-icon" role="img" aria-label="Record">🎤</span>
@@ -173,7 +190,7 @@ export default function LandingPage() {
 
         {/* PRICING */}
         <section className="ss-pricing-section" id="pricing">
-          <h2 className="ss-pricing-title">Pricing</h2>
+          <h2 className="ss-pricing-title gradient-text">Pricing</h2>
           <div className="ss-pricing-toggle" role="group" aria-label="Pricing toggle">
             <button
               className={`ss-toggle-btn${!annual ? ' active' : ''}`}
