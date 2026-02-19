@@ -1,7 +1,12 @@
+@import '../styles/theme.css';
+
 .editor-page {
-  height: calc(100vh - 60px);
+  min-height: 100vh;
+  background: var(--ss-bg);
   display: flex;
   flex-direction: column;
+  color: var(--ss-text);
+  font-family: var(--ss-font);
 }
 
 .editor-topbar {
@@ -9,8 +14,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid #e5e7eb;
-  background: white;
+  border-bottom: 1px solid var(--ss-border);
+  background: var(--ss-bg-card);
+  backdrop-filter: blur(10px);
 }
 
 .editor-title-input {
@@ -21,10 +27,12 @@
   padding: 0.25rem 0.5rem;
   flex: 1;
   max-width: 400px;
+  background: transparent;
+  color: var(--ss-text);
 }
 
 .editor-title-input:focus {
-  border-bottom: 2px solid #6366f1;
+  border-bottom: 2px solid var(--ss-accent-primary);
 }
 
 .editor-topbar-actions {
@@ -40,8 +48,8 @@
 }
 
 .editor-sidebar {
-  background: #f9fafb;
-  border-right: 1px solid #e5e7eb;
+  background: var(--ss-bg-secondary);
+  border-right: 1px solid var(--ss-border);
   padding: 1rem;
   overflow-y: auto;
 }
@@ -51,7 +59,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem;
-  border-radius: 6px;
+  border-radius: var(--ss-radius-sm);
   cursor: pointer;
   margin-bottom: 0.25rem;
   border: 1px solid transparent;
@@ -59,17 +67,17 @@
 }
 
 .slide-thumb:hover {
-  background: #e5e7eb;
+  background: var(--ss-bg-card-hover);
 }
 
 .slide-thumb.active {
-  background: #ede9fe;
-  border-color: #6366f1;
+  background: var(--ss-bg-card-hover);
+  border-color: var(--ss-accent-primary);
 }
 
 .slide-thumb-num {
-  background: #6366f1;
-  color: white;
+  background: var(--ss-gradient);
+  color: #fff;
   width: 24px;
   height: 24px;
   border-radius: 4px;
@@ -95,25 +103,27 @@
 }
 
 .btn-add-slide {
-  background: #6366f1;
-  color: white;
+  background: var(--ss-gradient);
+  color: #fff;
   border: none;
   padding: 0.5rem;
-  border-radius: 6px;
+  border-radius: var(--ss-radius-sm);
   cursor: pointer;
   font-size: 0.85rem;
+  font-family: var(--ss-font);
+  box-shadow: 0 2px 10px var(--ss-glow-primary, rgba(255,138,61,0.13));
 }
 
 .btn-add-slide:hover {
-  background: #4f46e5;
+  background: var(--ss-accent-secondary);
 }
 
 .btn-delete-slide {
-  background: white;
-  border: 1px solid #fca5a5;
-  color: #dc2626;
+  background: var(--ss-bg-card);
+  border: 1px solid #ff8a3d77;
+  color: var(--ss-accent-primary);
   padding: 0.5rem;
-  border-radius: 6px;
+  border-radius: var(--ss-radius-sm);
   cursor: pointer;
   font-size: 0.85rem;
 }
@@ -129,17 +139,18 @@
   flex-direction: column;
   justify-content: center;
   overflow: auto;
-  background: #f3f4f6;
+  background: var(--ss-bg-card);
+  border-radius: var(--ss-radius);
+  margin: 2rem;
 }
 
 .editor-panel {
-  background: white;
-  border-left: 1px solid #e5e7eb;
+  background: var(--ss-bg-card);
+  border-left: 1px solid var(--ss-border);
   padding: 1rem;
   overflow-y: auto;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .editor-layout {
     grid-template-columns: 1fr;
@@ -148,7 +159,7 @@
 
   .editor-sidebar {
     border-right: none;
-    border-bottom: 1px solid #e5e7eb;
+    border-bottom: 1px solid var(--ss-border);
     display: flex;
     overflow-x: auto;
     gap: 0.5rem;
@@ -170,6 +181,6 @@
 
   .editor-panel {
     border-left: none;
-    border-top: 1px solid #e5e7eb;
+    border-top: 1px solid var(--ss-border);
   }
 }

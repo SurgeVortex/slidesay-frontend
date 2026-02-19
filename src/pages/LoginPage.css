@@ -1,32 +1,37 @@
+@import '../styles/theme.css';
+
 .login-container {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   padding: 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--ss-bg);
 }
 
 .login-card {
-  background: white;
-  border-radius: 12px;
+  background: var(--ss-bg-card);
+  border-radius: var(--ss-radius);
   padding: 3rem 2rem;
   max-width: 400px;
   width: 100%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  color: #333;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  color: var(--ss-text);
+  border: 1px solid var(--ss-border);
+  backdrop-filter: blur(14px);
 }
 
 .login-card h1 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
   text-align: center;
-  color: #333;
+  color: var(--ss-text);
+  font-family: var(--ss-font-display);
 }
 
 .login-subtitle {
   text-align: center;
-  color: #666;
+  color: var(--ss-text-muted);
   margin-bottom: 2rem;
   font-size: 1rem;
 }
@@ -44,47 +49,33 @@
   justify-content: center;
   gap: 0.75rem;
   padding: 0.875rem 1.5rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  background: white;
-  color: #333;
-  font-weight: 500;
+  border: 1px solid var(--ss-border);
+  border-radius: var(--ss-radius-sm);
+  background: var(--ss-gradient);
+  color: #fff;
+  font-weight: 600;
+  font-family: var(--ss-font);
   text-decoration: none;
   transition: all 0.2s ease;
+  box-shadow: 0 2px 16px var(--ss-glow-primary, rgba(255, 138, 61, 0.2));
 }
 
 .login-button:hover {
-  background: #f9fafb;
-  border-color: #667eea;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  background: var(--ss-accent-secondary);
+  border-color: var(--ss-accent-primary);
+  color: #fff;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 4px 24px var(--ss-glow-primary, rgba(255, 138, 61, 0.32));
 }
 
 .login-footer {
   text-align: center;
   font-size: 0.75rem;
-  color: #999;
+  color: var(--ss-text-muted);
   line-height: 1.5;
+  margin-top: 2.5rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  .login-card {
-    background: #1a1a1a;
-    color: rgba(255, 255, 255, 0.87);
-  }
-
-  .login-card h1 {
-    color: rgba(255, 255, 255, 0.87);
-  }
-
-  .login-button {
-    background: #2a2a2a;
-    border-color: #444;
-    color: rgba(255, 255, 255, 0.87);
-  }
-
-  .login-button:hover {
-    background: #333;
-    border-color: #667eea;
-  }
+@media (max-width: 520px) {
+  .login-card { padding: 2rem 0.5rem; }
 }

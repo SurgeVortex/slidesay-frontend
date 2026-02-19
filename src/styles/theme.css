@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+
+:root {
+  --ss-bg: #0f0a1a;
+  --ss-bg-secondary: #1a1128;
+  --ss-bg-card: rgba(255, 255, 255, 0.03);
+  --ss-bg-card-hover: rgba(255, 255, 255, 0.06);
+  --ss-border: rgba(255, 255, 255, 0.08);
+  --ss-text: #f1f0fb;
+  --ss-text-muted: #a8a6bb;
+  --ss-accent-primary: #ff8a3d;
+  --ss-accent-secondary: #ffa726;
+  --ss-gradient: linear-gradient(135deg, #ff8a3d, #ff6b35);
+  --ss-radius: 16px;
+  --ss-radius-sm: 10px;
+  --ss-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ss-font-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
+}

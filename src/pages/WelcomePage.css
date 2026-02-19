@@ -1,7 +1,11 @@
+@import '../styles/theme.css';
+
 .welcome-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--ss-bg);
+  font-family: var(--ss-font);
 }
 
 .welcome-nav {
@@ -9,13 +13,15 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: rgba(0, 0, 0, 0.05);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--ss-bg-secondary);
+  border-bottom: 1px solid var(--ss-border);
 }
 
 .welcome-nav h2 {
   margin: 0;
   font-size: 1.5rem;
+  color: var(--ss-text);
+  font-family: var(--ss-font-display);
 }
 
 .welcome-nav-actions {
@@ -26,21 +32,24 @@
 
 .user-display {
   font-size: 0.875rem;
-  color: #666;
+  color: var(--ss-text-muted);
 }
 
 .logout-button {
   padding: 0.5rem 1rem;
-  background: #646cff;
-  color: white;
-  border-radius: 6px;
+  background: var(--ss-gradient);
+  color: #fff;
+  border: none;
+  border-radius: var(--ss-radius-sm);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
+  font-family: var(--ss-font);
+  box-shadow: 0 2px 12px var(--ss-glow-primary, rgba(255, 138, 61, 0.24));
   transition: background 0.2s ease;
 }
 
 .logout-button:hover {
-  background: #535bf2;
+  background: var(--ss-accent-secondary);
 }
 
 .welcome-content {
@@ -59,11 +68,13 @@
 .welcome-hero h1 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
+  color: var(--ss-text);
+  font-family: var(--ss-font-display);
 }
 
 .welcome-subtitle {
   font-size: 1.125rem;
-  color: #666;
+  color: var(--ss-text-muted);
 }
 
 .welcome-info {
@@ -74,27 +85,33 @@
 
 .info-card {
   padding: 1.5rem;
-  background: rgba(100, 108, 255, 0.05);
-  border: 1px solid rgba(100, 108, 255, 0.2);
-  border-radius: 12px;
+  background: var(--ss-bg-card);
+  border: 1px solid var(--ss-border);
+  border-radius: var(--ss-radius);
+  font-family: var(--ss-font);
+  color: var(--ss-text);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.20);
 }
 
 .info-card h3 {
   margin: 0 0 1rem 0;
   font-size: 1.25rem;
+  font-family: var(--ss-font-display);
+  color: var(--ss-accent-primary);
 }
 
 .info-card p {
   margin: 0;
   line-height: 1.6;
-  color: #666;
+  color: var(--ss-text-muted);
 }
 
 .info-card ul {
   margin: 0;
   padding-left: 1.5rem;
   line-height: 1.8;
-  color: #666;
+  color: var(--ss-text-muted);
 }
 
 .user-info {
@@ -106,34 +123,13 @@
 
 .user-info dt {
   font-weight: 600;
+  color: var(--ss-text-muted);
 }
 
 .user-info dd {
   margin: 0;
-  color: #666;
+  color: var(--ss-text);
   word-break: break-all;
-}
-
-@media (prefers-color-scheme: dark) {
-  .welcome-nav {
-    background: rgba(255, 255, 255, 0.05);
-    border-bottom-color: rgba(255, 255, 255, 0.1);
-  }
-
-  .user-display {
-    color: #aaa;
-  }
-
-  .welcome-subtitle,
-  .info-card p,
-  .info-card ul,
-  .user-info dd {
-    color: #aaa;
-  }
-
-  .info-card {
-    background: rgba(100, 108, 255, 0.1);
-  }
 }
 
 @media (max-width: 768px) {

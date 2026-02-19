@@ -1,17 +1,24 @@
+@import '../styles/theme.css';
+
 .pricing-page {
   max-width: 900px;
   margin: 0 auto;
   padding: 3rem 1rem;
   text-align: center;
+  background: var(--ss-bg);
+  color: var(--ss-text);
+  font-family: var(--ss-font);
 }
 
 .pricing-page h1 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
+  color: var(--ss-accent-primary);
+  font-family: var(--ss-font-display);
 }
 
 .pricing-subtitle {
-  color: #6b7280;
+  color: var(--ss-text-muted);
   margin-bottom: 3rem;
   font-size: 1.1rem;
 }
@@ -27,21 +34,27 @@
 .pricing-faq h2 {
   text-align: center;
   margin-bottom: 2rem;
+  color: var(--ss-accent-primary);
+  font-family: var(--ss-font-display);
 }
 
 .pricing-faq details {
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  border: 1px solid var(--ss-border);
+  border-radius: var(--ss-radius-sm);
   margin-bottom: 0.75rem;
   overflow: hidden;
+  background: var(--ss-bg-card);
+  backdrop-filter: blur(6px);
 }
 
 .pricing-faq summary {
   padding: 1rem 1.25rem;
   cursor: pointer;
   font-weight: 600;
-  background: #f9fafb;
+  background: var(--ss-bg-card-hover);
+  color: var(--ss-text);
   list-style: none;
+  border-bottom: 1px solid var(--ss-border);
 }
 
 .pricing-faq summary::-webkit-details-marker {
@@ -49,48 +62,55 @@
 }
 
 .pricing-faq summary::before {
-  content: '▸ ';
-  color: #6366f1;
+  content: '\25b8 ';
+  color: var(--ss-accent-primary);
 }
 
 .pricing-faq details[open] summary::before {
-  content: '▾ ';
+  content: '\25be ';
 }
 
 .pricing-faq details p {
   padding: 0 1.25rem 1rem;
   margin: 0;
-  color: #4b5563;
+  color: var(--ss-text-muted);
   line-height: 1.6;
 }
 
 .pricing-cta {
   margin-top: 4rem;
   padding: 3rem 1rem;
-  background: linear-gradient(135deg, #6366f1, #3b82f6);
-  border-radius: 16px;
-  color: white;
+  background: var(--ss-gradient);
+  border-radius: var(--ss-radius);
+  color: #fff;
+  font-family: var(--ss-font-display);
+  box-shadow: 0 6px 28px var(--ss-glow-primary, rgba(255,138,61,0.22));
 }
 
 .pricing-cta h2 {
   margin: 0 0 0.5rem;
+  color: #fff;
 }
 
 .pricing-cta p {
-  opacity: 0.9;
+  opacity: 0.95;
   margin: 0 0 1.5rem;
+  color: #fff;
 }
 
 .pricing-cta-btn {
   display: inline-block;
-  background: white;
-  color: #6366f1;
+  background: #fff;
+  color: var(--ss-accent-primary);
   padding: 0.75rem 2rem;
-  border-radius: 8px;
+  border-radius: var(--ss-radius-sm);
   text-decoration: none;
   font-weight: 700;
+  font-family: var(--ss-font);
+  box-shadow: 0 2px 8px var(--ss-glow-primary, rgba(255,138,61,0.14));
 }
 
 .pricing-cta-btn:hover {
-  opacity: 0.9;
+  background: var(--ss-accent-secondary);
+  color: #fff;
 }

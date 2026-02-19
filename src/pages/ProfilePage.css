@@ -1,0 +1,95 @@
+@import '../styles/theme.css';
+
+/* Profile/Usage within .welcome-info as container, .info-card reused from WelcomePage.css but override as needed */
+.welcome-info {
+  max-width: 480px;
+  margin: 2rem auto;
+}
+
+.info-card {
+  padding: 1.5rem;
+  background: var(--ss-bg-card);
+  border: 1px solid var(--ss-border);
+  border-radius: var(--ss-radius);
+  font-family: var(--ss-font);
+  color: var(--ss-text);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.16);
+  backdrop-filter: blur(10px);
+}
+
+.info-card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: var(--ss-accent-primary);
+  font-family: var(--ss-font-display);
+}
+
+.user-info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1rem;
+  font-size: 0.95rem;
+}
+
+.user-info dt {
+  font-weight: 600;
+  color: var(--ss-text-muted);
+}
+
+.user-info dd {
+  margin: 0;
+  color: var(--ss-text);
+  word-break: break-all;
+}
+
+button.primary,
+.info-card button.primary {
+  background: var(--ss-gradient);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--ss-radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--ss-font);
+  margin: 0.5rem 0.5rem 0 0;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.13s;
+  box-shadow: 0 2px 10px var(--ss-glow-primary, rgba(255,138,61,0.18));
+}
+button.primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+button.primary:hover {
+  background: var(--ss-accent-secondary);
+  transform: translateY(-1px) scale(1.04);
+}
+
+.info-card button:not(.primary) {
+  background: transparent;
+  color: var(--ss-accent-primary);
+  border: 1px solid var(--ss-accent-primary);
+  padding: 0.5rem 1.2rem;
+  border-radius: var(--ss-radius-sm);
+  font-weight: 500;
+  cursor: pointer;
+  margin: 0.5rem 0 0 0;
+  font-family: var(--ss-font);
+  transition: background 0.15s, color 0.15s, border 0.15s;
+}
+.info-card button:not(.primary):hover {
+  background: var(--ss-accent-primary);
+  color: #fff;
+}
+
+/* Success/error msg styles */
+.info-card div[style*="color:green"] {
+  margin-top: 0.5rem;
+  color: #4ade80 !important;
+  font-weight: 600;
+}
+.info-card div[style*="color:red"] {
+  margin-top: 0.5rem;
+  color: #f87171 !important;
+  font-weight: 600;
+}

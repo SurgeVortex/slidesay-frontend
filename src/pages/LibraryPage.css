@@ -1,7 +1,12 @@
+@import '../styles/theme.css';
+
 .library-page {
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem 1rem;
+  background: var(--ss-bg);
+  color: var(--ss-text);
+  font-family: var(--ss-font);
 }
 
 .library-header {
@@ -14,30 +19,35 @@
 .library-header h1 {
   font-size: 1.75rem;
   margin: 0;
+  font-family: var(--ss-font-display);
+  color: var(--ss-accent-primary);
 }
 
 .btn-create {
-  background: #6366f1;
-  color: white;
+  background: var(--ss-gradient);
+  color: #fff;
   padding: 0.6rem 1.5rem;
-  border-radius: 8px;
+  border-radius: var(--ss-radius-sm);
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
+  border: none;
+  box-shadow: 0 2px 10px var(--ss-glow-primary, rgba(255,138,61,0.17));
+  font-family: var(--ss-font);
 }
 
 .btn-create:hover {
-  background: #4f46e5;
+  background: var(--ss-accent-secondary);
 }
 
 .library-empty {
   text-align: center;
   padding: 4rem 1rem;
-  color: #6b7280;
+  color: var(--ss-text-muted);
 }
 
 .library-empty h2 {
-  color: #374151;
+  color: var(--ss-text);
 }
 
 .library-grid {
@@ -47,22 +57,27 @@
 }
 
 .library-card {
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
+  border: 1px solid var(--ss-border);
+  border-radius: var(--ss-radius);
   overflow: hidden;
   cursor: pointer;
   transition: all 0.2s;
   position: relative;
-  background: white;
+  background: var(--ss-bg-card);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  color: var(--ss-text);
+  backdrop-filter: blur(8px);
 }
 
 .library-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 24px var(--ss-glow-primary, rgba(255, 138, 61, 0.14));
   transform: translateY(-2px);
+  border-color: var(--ss-accent-primary);
+  background: var(--ss-bg-card-hover);
 }
 
 .card-thumb {
-  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  background: var(--ss-gradient);
   height: 120px;
   display: flex;
   align-items: center;
@@ -76,25 +91,27 @@
 .card-title {
   margin: 0 0 0.25rem;
   font-size: 1rem;
+  font-family: var(--ss-font-display);
 }
 
 .card-meta {
   margin: 0;
   font-size: 0.85rem;
-  color: #6b7280;
+  color: var(--ss-text-muted);
 }
 
 .card-delete {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--ss-bg-card-hover);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--ss-radius-sm);
   padding: 0.25rem 0.5rem;
   cursor: pointer;
   opacity: 0;
   transition: opacity 0.2s;
+  color: var(--ss-text-muted);
 }
 
 .library-card:hover .card-delete {
