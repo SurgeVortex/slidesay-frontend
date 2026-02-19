@@ -5,7 +5,7 @@
 - **App Display Name**: SlideSay.com – Presentation automation platform
 - **Environment**: prod
 - **Frontend Domain**: slidesay.isonet.casa
-- **API Base URL**: https://api.slidesay.isonet.casa
+- **API Base URL**: https://slidesay-api.isonet.casa
 
 ## Technology Stack
 **Framework**: React 19.2+
@@ -68,7 +68,7 @@ Enforce all authorization rules in backend. Show or hide UI elements based on us
    - Use `role="status"` for loading states
    - Minimum requirement: WCAG 2.1 AA compliance for all interactive flows, forms, and navigation. Advanced ARIA patterns (modals, accordions, etc.) are optional and project-specific.
 - All frontend API contracts must match the backend contracts exactly. Reference backend system prompt for request/response formats, error handling, and status codes.
-- **Base URL**: `https://api.slidesay.isonet.casa`
+- **Base URL**: `https://slidesay-api.isonet.casa`
 - **Protocol**: HTTPS only
 - **Authentication**: Bearer token in Authorization header (required for all protected endpoints)
 - **CORS**: Already configured on backend to allow requests from `slidesay.isonet.casa`
