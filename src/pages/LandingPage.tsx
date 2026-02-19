@@ -254,34 +254,53 @@ export default function LandingPage() {
               </button>
             </div>
 
-            {/* Enhanced Product mockup */}
+            {/* Enhanced Product mockup — split: voice input → slide output */}
             <div className="ss-hero-mockup">
               <div className="ss-mockup-bar">
                 <span className="ss-mockup-dot" />
                 <span className="ss-mockup-dot" />
                 <span className="ss-mockup-dot" />
               </div>
-              <div className="ss-mockup-body">
-                <div className="ss-mockup-content">
+              <div className="ss-mockup-body ss-mockup-split">
+                {/* Left: Voice input */}
+                <div className="ss-mockup-input">
+                  <div className="ss-mockup-input-header">
+                    <MicIcon />
+                    <span className="ss-mockup-label">Recording...</span>
+                  </div>
                   <div className="ss-mockup-wave">
-                    {[...Array(10)].map((_, i) => (
+                    {[...Array(12)].map((_, i) => (
                       <span key={i} className="ss-mockup-wave-bar" />
                     ))}
                   </div>
-                  <span className="ss-mockup-label">
-                    <MicIcon />
-                    Recording...
-                  </span>
+                  <div className="ss-mockup-transcript">
+                    <span className="ss-transcript-line">"Today we'll cover three key strategies for...</span>
+                  </div>
                 </div>
-                <div className="ss-mockup-slides">
-                  {[...Array(3)].map((_, i) => (
-                    <div key={i} className="ss-mockup-slide">
+                {/* Arrow */}
+                <div className="ss-mockup-arrow">
+                  <SparklesIcon />
+                </div>
+                {/* Right: Slide output */}
+                <div className="ss-mockup-output">
+                  <div className="ss-mockup-slide ss-mockup-slide-hero">
+                    <div className="ss-mockup-slide-title-text">3 Key Strategies</div>
+                    <div className="ss-mockup-slide-subtitle">For Growing Your Business</div>
+                  </div>
+                  <div className="ss-mockup-slide-row">
+                    <div className="ss-mockup-slide ss-mockup-slide-sm">
                       <div className="ss-mockup-slide-title" />
                       <div className="ss-mockup-slide-line" />
                       <div className="ss-mockup-slide-line" />
+                      <div className="ss-mockup-slide-line short" />
+                    </div>
+                    <div className="ss-mockup-slide ss-mockup-slide-sm">
+                      <div className="ss-mockup-slide-title" />
+                      <div className="ss-mockup-slide-line" />
+                      <div className="ss-mockup-slide-line short" />
                       <div className="ss-mockup-slide-line" />
                     </div>
-                  ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -344,32 +363,40 @@ export default function LandingPage() {
           <h2 className="ss-features-title gradient-text">Built for teachers, loved by everyone</h2>
           <div className="ss-features-grid">
             <div className="ss-feature-card">
-              <span className="ss-feature-icon">
-                <MicIcon />
-              </span>
+              <div className="ss-feature-icon-wrap">
+                <span className="ss-feature-icon">
+                  <MicIcon />
+                </span>
+              </div>
               <h3>Voice-First</h3>
-              <p>Speak your ideas. SlideSay turns your voice into content in seconds.</p>
+              <p>Speak your ideas. SlideSay turns your voice into content in seconds. No typing, no templates, no hassle.</p>
             </div>
             <div className="ss-feature-card">
-              <span className="ss-feature-icon">
-                <BrainIcon />
-              </span>
+              <div className="ss-feature-icon-wrap">
+                <span className="ss-feature-icon">
+                  <BrainIcon />
+                </span>
+              </div>
               <h3>Smart Structuring</h3>
-              <p>AI builds bullet points, organizes topics, and keeps your flow natural.</p>
+              <p>AI builds bullet points, organizes topics, and keeps your flow natural. Your ideas, perfectly structured.</p>
             </div>
             <div className="ss-feature-card">
-              <span className="ss-feature-icon">
-                <LayersIcon />
-              </span>
+              <div className="ss-feature-icon-wrap">
+                <span className="ss-feature-icon">
+                  <LayersIcon />
+                </span>
+              </div>
               <h3>Multiple Formats</h3>
-              <p>Export professional slides as PowerPoint or PDF. Preview instantly online.</p>
+              <p>Export professional slides as PowerPoint or PDF. Preview instantly online. Share anywhere.</p>
             </div>
             <div className="ss-feature-card">
-              <span className="ss-feature-icon">
-                <PaletteIcon />
-              </span>
+              <div className="ss-feature-icon-wrap">
+                <span className="ss-feature-icon">
+                  <PaletteIcon />
+                </span>
+              </div>
               <h3>Professional Templates</h3>
-              <p>Choose from gorgeous designs tailored for teaching, business, and beyond.</p>
+              <p>Choose from gorgeous designs tailored for teaching, business, and beyond. Look polished every time.</p>
             </div>
           </div>
         </section>
