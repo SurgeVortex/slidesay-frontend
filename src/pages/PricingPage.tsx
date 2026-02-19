@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PricingCards from '../components/PricingCards';
 import './PricingPage.css';
 
