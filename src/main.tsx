@@ -27,36 +27,57 @@ if (!rootElement) {
   throw new Error('Failed to find the root element');
 }
 
-// Initialize MSAL and render app
-initializeMsal()
-  .then(() => {
-    createRoot(rootElement).render(
-      <StrictMode>
-        <HelmetProvider>
-          <MsalProvider instance={msalInstance}>
-            <BrowserRouter
-              {...({
-                future: {
-                  v7_startTransition: true,
-                  v7_relativeSplatPath: true,
-                },
-              } as BrowserRouterPropsWithFuture)}
-            >
-              <App />
-            </BrowserRouter>
-          </MsalProvider>
-        </HelmetProvider>
-      </StrictMode>,
-    );
-  })
-  .catch((error) => {
-    console.error('Failed to initialize MSAL:', error);
-    rootElement.innerHTML = `
-      <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: system-ui;">
-        <div style="text-align: center;">
-          <h1>Authentication Error</h1>
-          <p>Failed to initialize authentication. Please refresh the page.</p>
+const devMode = import.meta.env.VITE_DEV_MODE === 'true';
+
+if (devMode) {
+  createRoot(rootElement).render(
+    <StrictMode>
+      <HelmetProvider>
+        <BrowserRouter
+          {...({
+            future: {
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            },
+          } as BrowserRouterPropsWithFuture)}
+        >
+          <App />
+        </BrowserRouter>
+      </HelmetProvider>
+    </StrictMode>,
+  );
+} else {
+  // Initialize MSAL and render app
+  initializeMsal()
+    .then(() => {
+      createRoot(rootElement).render(
+        <StrictMode>
+          <HelmetProvider>
+            <MsalProvider instance={msalInstance}>
+              <BrowserRouter
+                {...({
+                  future: {
+                    v7_startTransition: true,
+                    v7_relativeSplatPath: true,
+                  },
+                } as BrowserRouterPropsWithFuture)}
+              >
+                <App />
+              </BrowserRouter>
+            </MsalProvider>
+          </HelmetProvider>
+        </StrictMode>,
+      );
+    })
+    .catch((error) => {
+      console.error('Failed to initialize MSAL:', error);
+      rootElement.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: system-ui;">
+          <div style="text-align: center;">
+            <h1>Authentication Error</h1>
+            <p>Failed to initialize authentication. Please refresh the page.</p>
+          </div>
         </div>
-      </div>
-    `;
-  });
+      `;
+    });
+}

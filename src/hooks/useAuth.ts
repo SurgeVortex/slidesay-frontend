@@ -93,7 +93,7 @@ async function authenticateWithBackend(token: string): Promise<BackendUserRespon
  * This hook integrates with Microsoft Authentication Library (MSAL)
  * to provide authentication state and user information.
  */
-export function useAuth() {
+function useMsalAuth() {
   const { instance, accounts, inProgress } = useMsal();
   const account = useAccount(accounts[0] || undefined);
   const [user, setUser] = useState<UserInfo | null>(null);
@@ -150,3 +150,19 @@ export function useAuth() {
 
   return { user, isLoading };
 }
+
+function useDevAuth() {
+  return {
+    user: {
+      userId: 'dev-user',
+      userDetails: 'dev@test.com',
+      identityProvider: 'dev',
+      userRoles: ['user'],
+      displayName: 'Dev User',
+      email: 'dev@test.com',
+    } as UserInfo,
+    isLoading: false,
+  };
+}
+
+export const useAuth = import.meta.env.VITE_DEV_MODE === 'true' ? useDevAuth : useMsalAuth;

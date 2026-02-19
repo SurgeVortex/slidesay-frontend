@@ -6,6 +6,10 @@ import { loginRequest, msalInstance } from '../config/msal.config';
  * Get access token from MSAL
  */
 async function getAccessToken(): Promise<string | null> {
+  // Dev mode — skip MSAL
+  if (import.meta.env.VITE_DEV_MODE === 'true') {
+    return 'dev-token';
+  }
   const account = msalInstance.getActiveAccount();
   if (!account) return null;
 
