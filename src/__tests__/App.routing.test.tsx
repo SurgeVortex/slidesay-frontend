@@ -63,7 +63,7 @@ describe('App routing and auth flows', () => {
     });
   });
 
-  it('fallback route redirects: authenticated -> /welcome, unauthenticated -> /', async () => {
+  it('fallback route redirects: authenticated -> /welcome, unauthenticated -> /login', async () => {
     mockUseAuthFn.mockReturnValue({
       user: { userId: '2', displayName: 'Auth Two', email: 'b@c.com', identityProvider: 'azure', userRoles: [] },
       isLoading: false,
