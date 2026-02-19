@@ -1,1 +1,96 @@
-.pricing-page { padding: 2rem; }
+.pricing-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+
+.pricing-page h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.pricing-subtitle {
+  color: #6b7280;
+  margin-bottom: 3rem;
+  font-size: 1.1rem;
+}
+
+.pricing-faq {
+  margin-top: 4rem;
+  text-align: left;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pricing-faq h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.pricing-faq details {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.pricing-faq summary {
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  font-weight: 600;
+  background: #f9fafb;
+  list-style: none;
+}
+
+.pricing-faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.pricing-faq summary::before {
+  content: '▸ ';
+  color: #6366f1;
+}
+
+.pricing-faq details[open] summary::before {
+  content: '▾ ';
+}
+
+.pricing-faq details p {
+  padding: 0 1.25rem 1rem;
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.pricing-cta {
+  margin-top: 4rem;
+  padding: 3rem 1rem;
+  background: linear-gradient(135deg, #6366f1, #3b82f6);
+  border-radius: 16px;
+  color: white;
+}
+
+.pricing-cta h2 {
+  margin: 0 0 0.5rem;
+}
+
+.pricing-cta p {
+  opacity: 0.9;
+  margin: 0 0 1.5rem;
+}
+
+.pricing-cta-btn {
+  display: inline-block;
+  background: white;
+  color: #6366f1;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.pricing-cta-btn:hover {
+  opacity: 0.9;
+}
