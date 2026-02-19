@@ -166,3 +166,31 @@ export async function generatePresentation(transcript: string, title?: string) {
   });
 }
 
+/**
+ * Get a presentation by ID
+ */
+export async function getPresentation(id: string) {
+  return apiRequest<{
+    id: string;
+    title: string;
+    slides: Array<{ type: string; title: string; bullets?: string[]; subtitle?: string; notes?: string }>;
+    transcript: string;
+    createdAt: string;
+    updatedAt: string;
+  }>(`/api/presentations/${id}`);
+}
+
+/**
+ * Update a presentation
+ */
+export async function updatePresentation(id: string, data: { title?: string; slides?: Array<{ type: string; title: string; bullets?: string[]; subtitle?: string; notes?: string }> }) {
+  return apiRequest<{
+    id: string;
+    title: string;
+    slides: Array<{ type: string; title: string; bullets?: string[]; subtitle?: string; notes?: string }>;
+  }>(`/api/presentations/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
+}
+
