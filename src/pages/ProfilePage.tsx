@@ -44,7 +44,7 @@ export default function ProfilePage() {
         setUsage(usageRes.data);
       }
     }
-    fetchData();
+    void fetchData();
   }, []);
 
   const handleSave = async () => {
@@ -91,7 +91,7 @@ export default function ProfilePage() {
         </dl>
         {editMode ? (
           <>
-            <button className="primary" onClick={handleSave} disabled={status === 'saving'}>Save</button>
+            <button className="primary" onClick={() => void handleSave()} disabled={status === 'saving'}>Save</button>
             <button onClick={() => setEditMode(false)}>Cancel</button>
             {status === 'error' && <div style={{ color: 'red' }}>{error}</div>}
           </>

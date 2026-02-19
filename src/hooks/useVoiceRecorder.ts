@@ -1,5 +1,4 @@
 import { useState, useRef, useCallback } from 'react';
-import '../types/speech';
 
 export interface SlideTranscript {
   index: number;

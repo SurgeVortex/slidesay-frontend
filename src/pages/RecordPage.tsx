@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import VoiceRecorder from '../components/VoiceRecorder';
 import { SlideTranscript } from '../hooks/useVoiceRecorder';
-import '../types/speech';
 import './RecordPage.css';
 
 const RecordPage: React.FC = () => {

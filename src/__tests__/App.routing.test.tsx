@@ -55,11 +55,11 @@ describe('App routing and auth flows', () => {
     });
   });
 
-  it('redirects unauthenticated users from /welcome to landing page', async () => {
+  it('redirects unauthenticated users from /welcome to login page', async () => {
     mockUseAuthFn.mockReturnValue({ user: null, isLoading: false });
     renderApp('/welcome');
     await waitFor(() => {
-      expect(screen.getByText(/say it\. slide it\. ship it\./i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /sign in with microsoft/i })).toBeInTheDocument();
     });
   });
 
@@ -88,7 +88,7 @@ describe('App routing and auth flows', () => {
       </HelmetProvider>,
     );
     await waitFor(() => {
-      expect(screen.getByText(/say it\. slide it\. ship it\./i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /sign in with microsoft/i })).toBeInTheDocument();
     });
   });
 });
