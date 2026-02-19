@@ -46,7 +46,13 @@ describe('App routing and auth flows', () => {
 
   it('shows WelcomePage for authenticated users navigating to /welcome', async () => {
     mockUseAuthFn.mockReturnValue({
-      user: { userId: '1', displayName: 'Auth User', email: 'a@b.com', identityProvider: 'azure', userRoles: [] },
+      user: {
+        userId: '1',
+        displayName: 'Auth User',
+        email: 'a@b.com',
+        identityProvider: 'azure',
+        userRoles: [],
+      },
       isLoading: false,
     });
     renderApp('/welcome');
@@ -66,7 +72,13 @@ describe('App routing and auth flows', () => {
 
   it('fallback route redirects: authenticated -> /welcome, unauthenticated -> /login', async () => {
     mockUseAuthFn.mockReturnValue({
-      user: { userId: '2', displayName: 'Auth Two', email: 'b@c.com', identityProvider: 'azure', userRoles: [] },
+      user: {
+        userId: '2',
+        displayName: 'Auth Two',
+        email: 'b@c.com',
+        identityProvider: 'azure',
+        userRoles: [],
+      },
       isLoading: false,
     });
     const { rerender } = render(
@@ -110,18 +122,32 @@ describe('Auth state transitions (INT-003)', () => {
   it('transitions from loading to authenticated state', async () => {
     mockUseAuthFn.mockReturnValue({ user: null, isLoading: true });
     const { rerender } = render(
-      <HelmetProvider><BrowserRouter><App /></BrowserRouter></HelmetProvider>,
+      <HelmetProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </HelmetProvider>,
     );
     await waitFor(() => {
       expect(screen.getByText(/loading/i)).toBeInTheDocument();
     });
 
     mockUseAuthFn.mockReturnValue({
-      user: { userId: '1', displayName: 'Test User', email: 'test@example.com', identityProvider: 'azure', userRoles: [] },
+      user: {
+        userId: '1',
+        displayName: 'Test User',
+        email: 'test@example.com',
+        identityProvider: 'azure',
+        userRoles: [],
+      },
       isLoading: false,
     });
     rerender(
-      <HelmetProvider><BrowserRouter><App /></BrowserRouter></HelmetProvider>,
+      <HelmetProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </HelmetProvider>,
     );
     // Unauthenticated at root shows landing page (auth users need to navigate to /welcome)
     await waitFor(() => {
@@ -132,7 +158,11 @@ describe('Auth state transitions (INT-003)', () => {
   it('transitions from loading to unauthenticated state', async () => {
     mockUseAuthFn.mockReturnValue({ user: null, isLoading: true });
     const { rerender } = render(
-      <HelmetProvider><BrowserRouter><App /></BrowserRouter></HelmetProvider>,
+      <HelmetProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </HelmetProvider>,
     );
     await waitFor(() => {
       expect(screen.getByText(/loading/i)).toBeInTheDocument();
@@ -140,7 +170,11 @@ describe('Auth state transitions (INT-003)', () => {
 
     mockUseAuthFn.mockReturnValue({ user: null, isLoading: false });
     rerender(
-      <HelmetProvider><BrowserRouter><App /></BrowserRouter></HelmetProvider>,
+      <HelmetProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </HelmetProvider>,
     );
     await waitFor(() => {
       expect(screen.getByText(/say it\. slide it\. ship it\./i)).toBeInTheDocument();
@@ -157,7 +191,13 @@ describe('Auth state transitions (INT-003)', () => {
 
   it('redirects authenticated users away from /login to /welcome', async () => {
     mockUseAuthFn.mockReturnValue({
-      user: { userId: '1', displayName: 'Test User', email: 'test@example.com', identityProvider: 'azure', userRoles: [] },
+      user: {
+        userId: '1',
+        displayName: 'Test User',
+        email: 'test@example.com',
+        identityProvider: 'azure',
+        userRoles: [],
+      },
       isLoading: false,
     });
     renderApp('/login');
@@ -168,7 +208,13 @@ describe('Auth state transitions (INT-003)', () => {
 
   it('displays user name on WelcomePage after successful auth', async () => {
     mockUseAuthFn.mockReturnValue({
-      user: { userId: '1', displayName: 'John Doe', email: 'john@example.com', identityProvider: 'azure', userRoles: [] },
+      user: {
+        userId: '1',
+        displayName: 'John Doe',
+        email: 'john@example.com',
+        identityProvider: 'azure',
+        userRoles: [],
+      },
       isLoading: false,
     });
     renderApp('/welcome');

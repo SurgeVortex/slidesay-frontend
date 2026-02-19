@@ -1,5 +1,3 @@
-
-
 interface Slide {
   type: string;
   title: string;
@@ -61,7 +59,10 @@ export default function SlidePreview({ slides, currentSlide, onSlideChange }: Sl
           marginTop: '0.75rem',
         }}
       >
-        <button onClick={() => onSlideChange(Math.max(0, currentSlide - 1))} disabled={currentSlide === 0}>
+        <button
+          onClick={() => onSlideChange(Math.max(0, currentSlide - 1))}
+          disabled={currentSlide === 0}
+        >
           ← Prev
         </button>
         <span style={{ fontSize: '0.9rem', color: '#6b7280' }}>

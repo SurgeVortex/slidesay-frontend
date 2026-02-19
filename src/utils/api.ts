@@ -209,7 +209,13 @@ export async function getPresentation(id: string) {
   return apiRequest<{
     id: string;
     title: string;
-    slides: Array<{ type: string; title: string; bullets?: string[]; subtitle?: string; notes?: string }>;
+    slides: Array<{
+      type: string;
+      title: string;
+      bullets?: string[];
+      subtitle?: string;
+      notes?: string;
+    }>;
     transcript: string;
     createdAt: string;
     updatedAt: string;
@@ -219,17 +225,33 @@ export async function getPresentation(id: string) {
 /**
  * Update a presentation
  */
-export async function updatePresentation(id: string, data: { title?: string; slides?: Array<{ type: string; title: string; bullets?: string[]; subtitle?: string; notes?: string }> }) {
+export async function updatePresentation(
+  id: string,
+  data: {
+    title?: string;
+    slides?: Array<{
+      type: string;
+      title: string;
+      bullets?: string[];
+      subtitle?: string;
+      notes?: string;
+    }>;
+  },
+) {
   return apiRequest<{
     id: string;
     title: string;
-    slides: Array<{ type: string; title: string; bullets?: string[]; subtitle?: string; notes?: string }>;
-  }>(`/api/presentations/${id}`,
-    {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    }
-  );
+    slides: Array<{
+      type: string;
+      title: string;
+      bullets?: string[];
+      subtitle?: string;
+      notes?: string;
+    }>;
+  }>(`/api/presentations/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(data),
+  });
 }
 
 /**

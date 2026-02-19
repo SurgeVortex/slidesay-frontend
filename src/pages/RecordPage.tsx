@@ -37,19 +37,30 @@ const RecordPage: React.FC = () => {
       <div className="slides-panel">
         <div className="slides-header">Slides</div>
         <ol className="slides-list">
-          {slides.map(slide => (
+          {slides.map((slide) => (
             <li className="slide-card" key={slide.index}>
-              <span className="slide-index">Slide {slide.index}:</span> <span className="slide-text">{slide.text}</span>
+              <span className="slide-index">Slide {slide.index}:</span>{' '}
+              <span className="slide-text">{slide.text}</span>
             </li>
           ))}
         </ol>
         <div className="slides-actions">
-          <button className="new-slide-btn" onClick={() => { void handleNewSlide(); }}>New Slide</button>
-          <button className="done-btn" onClick={handleDone} disabled={slides.length === 0}>Done  Create Presentation</button>
+          <button
+            className="new-slide-btn"
+            onClick={() => {
+              void handleNewSlide();
+            }}
+          >
+            New Slide
+          </button>
+          <button className="done-btn" onClick={handleDone} disabled={slides.length === 0}>
+            Done  Create Presentation
+          </button>
         </div>
         {!speechSupported && (
           <div className="speech-support-warning">
-            Your browser does not support speech recognition. Please use Chrome or Edge for voice recording.
+            Your browser does not support speech recognition. Please use Chrome or Edge for voice
+            recording.
           </div>
         )}
       </div>

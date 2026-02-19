@@ -19,8 +19,7 @@ export interface UseVoiceRecorderReturn {
 }
 
 export function useVoiceRecorder(): UseVoiceRecorderReturn {
-  const SpeechRecognitionAPI =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
+  const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
   const isSupported = !!SpeechRecognitionAPI;
 
   const [isRecording, setIsRecording] = useState(false);
@@ -90,9 +89,10 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
 
       recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
         if (event.error === 'not-allowed')
-          setError('Microphone access denied. Please allow microphone access in your browser settings.');
-        else if (event.error === 'no-speech')
-          setError('No speech detected. Please try again.');
+          setError(
+            'Microphone access denied. Please allow microphone access in your browser settings.',
+          );
+        else if (event.error === 'no-speech') setError('No speech detected. Please try again.');
         else setError(`Speech recognition error: ${event.error}`);
         setIsRecording(false);
       };

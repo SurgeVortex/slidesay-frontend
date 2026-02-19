@@ -81,16 +81,16 @@ export default function PricingPage() {
         <details>
           <summary>What happens to my presentations if I downgrade?</summary>
           <p>
-            Your presentations are always safe. If you downgrade, you can still view and edit them in
-            the browser. Export to PPTX/PDF requires an Educator or Pro plan.
+            Your presentations are always safe. If you downgrade, you can still view and edit them
+            in the browser. Export to PPTX/PDF requires an Educator or Pro plan.
           </p>
         </details>
 
         <details>
           <summary>Do you offer team plans?</summary>
           <p>
-            Team plans are coming soon! For now, each user needs their own account. Contact us if you
-            have specific team needs.
+            Team plans are coming soon! For now, each user needs their own account. Contact us if
+            you have specific team needs.
           </p>
         </details>
 

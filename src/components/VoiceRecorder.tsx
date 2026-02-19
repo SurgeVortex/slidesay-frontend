@@ -1,4 +1,3 @@
-
 import { useVoiceRecorder, SlideTranscript } from '../hooks/useVoiceRecorder';
 
 interface VoiceRecorderProps {
@@ -22,7 +21,10 @@ export default function VoiceRecorder({ onSlidesReady }: VoiceRecorderProps) {
     return (
       <div className="voice-unsupported">
         <p>⚠️ Speech recognition is not supported in this browser.</p>
-        <p>Please use <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong> for voice recording.</p>
+        <p>
+          Please use <strong>Google Chrome</strong> or <strong>Microsoft Edge</strong> for voice
+          recording.
+        </p>
       </div>
     );
   }
@@ -56,9 +58,7 @@ export default function VoiceRecorder({ onSlidesReady }: VoiceRecorderProps) {
       {(transcript || interimTranscript) && (
         <div className="transcript-display">
           {transcript && <span className="transcript-final">{transcript}</span>}
-          {interimTranscript && (
-            <span className="transcript-interim"> {interimTranscript}</span>
-          )}
+          {interimTranscript && <span className="transcript-interim"> {interimTranscript}</span>}
         </div>
       )}
 

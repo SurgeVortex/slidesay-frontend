@@ -43,7 +43,9 @@ export default function ExportButton({ format, presentationId, disabled }: Expor
   return (
     <div style={{ display: 'inline-block' }}>
       <button
-        onClick={() => { void handleExport(); }}
+        onClick={() => {
+          void handleExport();
+        }}
         disabled={disabled || loading || !presentationId}
         style={{
           padding: '0.5rem 1rem',

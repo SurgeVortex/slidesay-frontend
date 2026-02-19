@@ -26,7 +26,7 @@ export default function ProfilePage() {
   const [editMode, setEditMode] = useState(false);
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle'|'saving'|'error'|'saved'>('idle');
+  const [status, setStatus] = useState<'idle' | 'saving' | 'error' | 'saved'>('idle');
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -62,7 +62,12 @@ export default function ProfilePage() {
   };
 
   if (!profile) {
-    return <div className="info-card"><h3>Profile</h3><p>Loading or unavailable.</p></div>;
+    return (
+      <div className="info-card">
+        <h3>Profile</h3>
+        <p>Loading or unavailable.</p>
+      </div>
+    );
   }
 
   return (
@@ -73,14 +78,18 @@ export default function ProfilePage() {
           <dt>Name:</dt>
           <dd>
             {editMode ? (
-              <input value={displayName} onChange={e => setDisplayName(e.target.value)} />
-            ) : profile.displayName}
+              <input value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
+            ) : (
+              profile.displayName
+            )}
           </dd>
           <dt>Email:</dt>
           <dd>
             {editMode ? (
-              <input value={email} onChange={e => setEmail(e.target.value)} />
-            ) : profile.email}
+              <input value={email} onChange={(e) => setEmail(e.target.value)} />
+            ) : (
+              profile.email
+            )}
           </dd>
           <dt>Status:</dt>
           <dd>{profile.isActive ? '✅ Active' : '❌ Inactive'}</dd>
@@ -91,7 +100,13 @@ export default function ProfilePage() {
         </dl>
         {editMode ? (
           <>
-            <button className="primary" onClick={() => void handleSave()} disabled={status === 'saving'}>Save</button>
+            <button
+              className="primary"
+              onClick={() => void handleSave()}
+              disabled={status === 'saving'}
+            >
+              Save
+            </button>
             <button onClick={() => setEditMode(false)}>Cancel</button>
             {status === 'error' && <div style={{ color: 'red' }}>{error}</div>}
           </>
@@ -104,10 +119,18 @@ export default function ProfilePage() {
         <h3>📊 Usage</h3>
         {usage ? (
           <dl className="user-info">
-            <dt>Presentations this month:</dt><dd>{usage.presentationsThisMonth} / {usage.monthlyPresentationLimit}</dd>
-            <dt>Slides this month:</dt><dd>{usage.slidesThisMonth} / {usage.monthlySlideLimit}</dd>
+            <dt>Presentations this month:</dt>
+            <dd>
+              {usage.presentationsThisMonth} / {usage.monthlyPresentationLimit}
+            </dd>
+            <dt>Slides this month:</dt>
+            <dd>
+              {usage.slidesThisMonth} / {usage.monthlySlideLimit}
+            </dd>
           </dl>
-        ) : <p>Loading usage...</p>}
+        ) : (
+          <p>Loading usage...</p>
+        )}
       </div>
     </div>
   );

@@ -48,7 +48,15 @@ export default function EditorPage() {
 
   if (loading) {
     return (
-      <div className="editor-page" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+      <div
+        className="editor-page"
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '60vh',
+        }}
+      >
         <p> Loading presentation...</p>
       </div>
     );
@@ -56,9 +64,23 @@ export default function EditorPage() {
 
   if (error) {
     return (
-      <div className="editor-page" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+      <div
+        className="editor-page"
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '60vh',
+        }}
+      >
         <p> {error}</p>
-        <button onClick={() => { void navigate('/library'); }} style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}>
+        <button
+          onClick={() => {
+            void navigate('/library');
+          }}
+          style={{ marginTop: '1rem', padding: '0.5rem 1rem' }}
+        >
           Back to Library
         </button>
       </div>
@@ -112,14 +134,24 @@ export default function EditorPage() {
             </div>
           ))}
           <div className="sidebar-actions">
-            <button className="btn-add-slide" onClick={addSlide}>+ Add Slide</button>
-            <button className="btn-delete-slide" onClick={deleteSlide} disabled={slides.length <= 1}>
+            <button className="btn-add-slide" onClick={addSlide}>
+              + Add Slide
+            </button>
+            <button
+              className="btn-delete-slide"
+              onClick={deleteSlide}
+              disabled={slides.length <= 1}
+            >
                Delete
             </button>
           </div>
         </div>
         <div className="editor-preview">
-          <SlidePreview slides={slides} currentSlide={currentSlide} onSlideChange={setCurrentSlide} />
+          <SlidePreview
+            slides={slides}
+            currentSlide={currentSlide}
+            onSlideChange={setCurrentSlide}
+          />
         </div>
         <div className="editor-panel">
           <h3 style={{ margin: '0 0 0.5rem', fontSize: '0.9rem', color: '#6b7280' }}>Edit Slide</h3>

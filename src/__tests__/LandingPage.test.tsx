@@ -12,14 +12,16 @@ function renderLanding(route = '/') {
       <MemoryRouter initialEntries={[route]}>
         <LandingPage />
       </MemoryRouter>
-    </HelmetProvider>
+    </HelmetProvider>,
   );
 }
 
 describe('LandingPage', () => {
   it('renders hero headline', () => {
     renderLanding();
-    expect(screen.getByRole('heading', { name: /say it\. slide it\. ship it\./i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /say it\. slide it\. ship it\./i }),
+    ).toBeInTheDocument();
   });
 
   it('CTA buttons have correct links/actions', async () => {

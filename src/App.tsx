@@ -27,7 +27,7 @@ function App() {
       {/* Auth required routes */}
       <Route
         path="/welcome"
-        element={user ? <WelcomePage user={user} /> : <Navigate to="/login" />} 
+        element={user ? <WelcomePage user={user} /> : <Navigate to="/login" />}
       />
       <Route path="/record" element={user ? <RecordPage /> : <Navigate to="/login" />} />
       <Route path="/editor/:id" element={user ? <EditorPage /> : <Navigate to="/login" />} />

@@ -117,7 +117,13 @@ export default function WelcomePage({ user }: WelcomePageProps) {
                 <dt>Last Login:</dt>
                 <dd>{new Date(backendUser.lastLoginAt).toLocaleString()}</dd>
               </dl>
-              <a className="primary" href="/profile" style={{marginTop:12, display:'inline-block'}}>View & Edit Profile</a>
+              <a
+                className="primary"
+                href="/profile"
+                style={{ marginTop: 12, display: 'inline-block' }}
+              >
+                View & Edit Profile
+              </a>
             </div>
           )}
 
