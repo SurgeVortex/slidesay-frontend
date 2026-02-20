@@ -151,7 +151,7 @@ function useMsalAuth() {
   const isAuthenticated = !!user;
 
   const login = () => {
-    void instance.loginRedirect({ scopes: ['User.Read'] });
+    void instance.loginRedirect({ scopes: ['User.Read'], redirectUri: window.location.origin + '/auth/callback' });
   };
 
   const logout = () => {

@@ -8,7 +8,10 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     try {
-      await instance.loginRedirect(loginRequest);
+      await instance.loginRedirect({
+        ...loginRequest,
+        redirectUri: window.location.origin + '/auth/callback',
+      });
     } catch (error) {
       console.error('Login failed:', error);
     }
