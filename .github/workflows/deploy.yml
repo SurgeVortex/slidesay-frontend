@@ -54,6 +54,11 @@ jobs:
           VITE_AZURE_API_SCOPE: ${{ vars.VITE_AZURE_API_SCOPE }}
           VITE_GRAFANA_CLOUD_URL: ${{ secrets.VITE_GRAFANA_CLOUD_URL }}
 
+      - name: Verify SWA config in build output
+        run: |
+          test -f dist/staticwebapp.config.json && echo "✅ staticwebapp.config.json found in dist/" || echo "❌ MISSING"
+          cat dist/staticwebapp.config.json | head -5
+
       - name: Deploy to Azure Static Web Apps
         run: npx @azure/static-web-apps-cli deploy dist --deployment-token ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }} --env production
 
