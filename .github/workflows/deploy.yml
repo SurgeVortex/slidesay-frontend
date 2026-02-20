@@ -15,10 +15,10 @@ permissions:
   pull-requests: write
 
 jobs:
-  build:
+  build_and_deploy:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: self-hosted
-    name: Build & Test
+    name: Build and Deploy
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -58,56 +58,25 @@ jobs:
         run: |
           echo "=== staticwebapp.config.json ==="
           cat dist/staticwebapp.config.json
-          echo ""
           echo "=== dist/ contents ==="
           ls -la dist/
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: dist
-          path: dist/
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    name: Deploy to SWA
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist/
-
-      - name: Verify config before deploy
-        run: |
-          echo "=== Config file ==="
-          cat dist/staticwebapp.config.json
-          echo ""
-          echo "=== All files ==="
-          find dist/ -type f | head -30
-
       - name: Deploy to Azure Static Web Apps
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: upload
-          app_location: dist
-          output_location: ''
-          skip_app_build: true
+        env:
+          SWA_CLI_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+        run: |
+          # Deploy using SWA CLI with explicit app-location pointing to repo root
+          # so it finds staticwebapp.config.json, and output-location pointing to dist
+          npx @azure/static-web-apps-cli deploy \
+            --app-location . \
+            --output-location dist \
+            --env production \
+            --verbose
 
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     name: Close Pull Request
     steps:
       - name: Close Pull Request
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          action: 'close'
-          app_location: '/'
+        run: echo "PR closed"
