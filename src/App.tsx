@@ -9,6 +9,7 @@ import EditorPage from './pages/EditorPage';
 import LibraryPage from './pages/LibraryPage';
 import PricingPage from './pages/PricingPage';
 import ProfilePage from './pages/ProfilePage';
+import AuthCallbackPage from './pages/AuthCallbackPage';
 
 function App() {
   const { user, isLoading } = useAuth();
@@ -23,6 +24,7 @@ function App() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/pricing" element={<PricingPage />} />
       <Route path="/login" element={user ? <Navigate to="/welcome" /> : <LoginPage />} />
+      <Route path="/auth/callback" element={<AuthCallbackPage />} />
 
       {/* Auth required routes */}
       <Route
