@@ -1,30 +1,11 @@
 {
-  "routes": [
-    {
-      "route": "/",
-      "allowedRoles": [
-        "anonymous"
-      ]
-    },
-    {
-      "route": "/login",
-      "allowedRoles": [
-        "anonymous"
-      ]
-    },
-    {
-      "route": "/*",
-      "allowedRoles": [
-        "anonymous"
-      ]
-    }
-  ],
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": [
       "/images/*.{png,jpg,gif}",
       "/css/*",
-      "/api/*"
+      "/api/*",
+      "*.{js,css,png,jpg,gif,ico,svg,woff,woff2}"
     ]
   },
   "globalHeaders": {
@@ -33,14 +14,12 @@
     "X-Frame-Options": "DENY",
     "X-XSS-Protection": "1; mode=block",
     "Referrer-Policy": "strict-origin-when-cross-origin",
-    "Permissions-Policy": "geolocation=(), microphone=(), camera=()"
+    "Permissions-Policy": "geolocation=(), microphone=(self), camera=()"
   },
-  "mimeTypes": {
-    ".json": "application/json",
-    ".js": "text/javascript",
-    ".css": "text/css"
-  },
-  "platform": {
-    "apiRuntime": "node:20"
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html",
+      "statusCode": 200
+    }
   }
 }
