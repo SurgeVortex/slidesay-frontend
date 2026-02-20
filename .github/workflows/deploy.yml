@@ -15,10 +15,10 @@ permissions:
   pull-requests: write
 
 jobs:
-  build_and_deploy:
+  build:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: self-hosted
-    name: Build and Deploy
+    name: Build & Test
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -54,9 +54,6 @@ jobs:
           VITE_AZURE_API_SCOPE: ${{ vars.VITE_AZURE_API_SCOPE }}
           VITE_GRAFANA_CLOUD_URL: ${{ secrets.VITE_GRAFANA_CLOUD_URL }}
 
-      - name: Copy SWA config to build output
-        run: cp staticwebapp.config.json dist/staticwebapp.config.json
-
       - name: Verify SWA config in build output
         run: |
           echo "=== staticwebapp.config.json ==="
@@ -65,12 +62,47 @@ jobs:
           echo "=== dist/ contents ==="
           ls -la dist/
 
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy to SWA
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Verify config before deploy
+        run: |
+          echo "=== Config file ==="
+          cat dist/staticwebapp.config.json
+          echo ""
+          echo "=== All files ==="
+          find dist/ -type f | head -30
+
       - name: Deploy to Azure Static Web Apps
-        run: npx @azure/static-web-apps-cli deploy dist --deployment-token ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }} --env production
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: upload
+          app_location: dist
+          output_location: ''
+          skip_app_build: true
 
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: Close Pull Request
     steps:
       - name: Close Pull Request
