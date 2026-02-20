@@ -18,7 +18,7 @@
   border-top-color: var(--ss-accent-primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  box-shadow: 0 2px 12px var(--ss-glow-primary, rgba(255,138,61,0.22));
+  box-shadow: 0 2px 12px var(--ss-glow-primary, rgba(255, 138, 61, 0.22));
   background: var(--ss-bg-card);
 }
 

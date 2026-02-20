@@ -11,19 +11,32 @@ vi.mock('../utils/api', () => ({
 
 // Mock components used by EditorPage
 vi.mock('../components/SlidePreview', () => ({
-  default: ({ currentSlide, onSlideChange }: { slides: unknown[]; currentSlide: number; onSlideChange: (i: number) => void }) => (
-    <div data-testid="slide-preview" onClick={() => onSlideChange(0)}>Preview: slide {currentSlide}</div>
+  default: ({
+    currentSlide,
+    onSlideChange,
+  }: {
+    slides: unknown[];
+    currentSlide: number;
+    onSlideChange: (i: number) => void;
+  }) => (
+    <div data-testid="slide-preview" onClick={() => onSlideChange(0)}>
+      Preview: slide {currentSlide}
+    </div>
   ),
 }));
 
 vi.mock('../components/SlideEditor', () => ({
   default: ({ slide, onChange }: { slide: { title: string }; onChange: (s: unknown) => void }) => (
-    <div data-testid="slide-editor" onClick={() => onChange({ ...slide, title: 'edited' })}>{slide.title}</div>
+    <div data-testid="slide-editor" onClick={() => onChange({ ...slide, title: 'edited' })}>
+      {slide.title}
+    </div>
   ),
 }));
 
 vi.mock('../components/ExportButton', () => ({
-  default: ({ format }: { format: string }) => <button data-testid={`export-${format}`}>Export {format}</button>,
+  default: ({ format }: { format: string }) => (
+    <button data-testid={`export-${format}`}>Export {format}</button>
+  ),
 }));
 
 import EditorPage from '../pages/EditorPage';
@@ -38,7 +51,7 @@ function renderWithRouter(id = 'abc123') {
         <Route path="/editor/:id" element={<EditorPage />} />
         <Route path="/library" element={<div>Library</div>} />
       </Routes>
-    </MemoryRouter>
+    </MemoryRouter>,
   );
 }
 
@@ -110,7 +123,14 @@ describe('EditorPage', () => {
 
   it('updates title input', async () => {
     mockGetPresentation.mockResolvedValue({
-      data: { id: 'x', title: 'Old', slides: [{ type: 'title', title: 'S1' }], transcript: '', createdAt: '', updatedAt: '' },
+      data: {
+        id: 'x',
+        title: 'Old',
+        slides: [{ type: 'title', title: 'S1' }],
+        transcript: '',
+        createdAt: '',
+        updatedAt: '',
+      },
       status: 200,
     });
     renderWithRouter();

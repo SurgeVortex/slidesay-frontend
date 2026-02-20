@@ -33,10 +33,7 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
   const newSlide = useCallback(() => {
     const pendingText = currentTranscriptRef.current.trim();
     if (pendingText) {
-      setSlides((prev) => [
-        ...prev,
-        { index: prev.length + 1, text: pendingText },
-      ]);
+      setSlides((prev) => [...prev, { index: prev.length + 1, text: pendingText }]);
       currentTranscriptRef.current = '';
       setTranscript('');
       setInterimTranscript('');
@@ -74,10 +71,7 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
             if (cleaned) currentTranscriptRef.current += ' ' + cleaned;
             const pendingText = currentTranscriptRef.current.trim();
             if (pendingText) {
-              setSlides((prev) => [
-                ...prev,
-                { index: prev.length + 1, text: pendingText },
-              ]);
+              setSlides((prev) => [...prev, { index: prev.length + 1, text: pendingText }]);
               currentTranscriptRef.current = '';
             }
             setTranscript('');
@@ -119,10 +113,7 @@ export function useVoiceRecorder(): UseVoiceRecorderReturn {
     }
     const pendingText = currentTranscriptRef.current.trim();
     if (pendingText) {
-      setSlides((prev) => [
-        ...prev,
-        { index: prev.length + 1, text: pendingText },
-      ]);
+      setSlides((prev) => [...prev, { index: prev.length + 1, text: pendingText }]);
       currentTranscriptRef.current = '';
       setTranscript('');
     }

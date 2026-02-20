@@ -66,13 +66,21 @@ describe('PricingPage', () => {
     // Find the upgrade button by its text content
     const upgradeBtn = screen.getByText(/upgrade.*educator/i);
     fireEvent.click(upgradeBtn);
-    expect(mockFetch).toHaveBeenCalledWith('/api/stripe/checkout', expect.objectContaining({ method: 'POST' }));
+    expect(mockFetch).toHaveBeenCalledWith(
+      '/api/stripe/checkout',
+      expect.objectContaining({ method: 'POST' }),
+    );
   });
 
   it('calls portal API on manage click', () => {
     render(<PricingPage />);
-    fireEvent.change(screen.getByPlaceholderText(/stripe customer id/i), { target: { value: 'cus_x' } });
+    fireEvent.change(screen.getByPlaceholderText(/stripe customer id/i), {
+      target: { value: 'cus_x' },
+    });
     fireEvent.click(screen.getByText(/manage subscription/i));
-    expect(mockFetch).toHaveBeenCalledWith('/api/stripe/customer-portal', expect.objectContaining({ method: 'POST' }));
+    expect(mockFetch).toHaveBeenCalledWith(
+      '/api/stripe/customer-portal',
+      expect.objectContaining({ method: 'POST' }),
+    );
   });
 });

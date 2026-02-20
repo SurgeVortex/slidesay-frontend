@@ -84,7 +84,7 @@
   border-radius: var(--ss-radius);
   color: #fff;
   font-family: var(--ss-font-display);
-  box-shadow: 0 6px 28px var(--ss-glow-primary, rgba(255,138,61,0.22));
+  box-shadow: 0 6px 28px var(--ss-glow-primary, rgba(255, 138, 61, 0.22));
 }
 
 .pricing-cta h2 {
@@ -107,7 +107,7 @@
   text-decoration: none;
   font-weight: 700;
   font-family: var(--ss-font);
-  box-shadow: 0 2px 8px var(--ss-glow-primary, rgba(255,138,61,0.14));
+  box-shadow: 0 2px 8px var(--ss-glow-primary, rgba(255, 138, 61, 0.14));
 }
 
 .pricing-cta-btn:hover {

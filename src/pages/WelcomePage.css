@@ -91,7 +91,7 @@
   font-family: var(--ss-font);
   color: var(--ss-text);
   backdrop-filter: blur(10px);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.20);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
 .info-card h3 {

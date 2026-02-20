@@ -55,7 +55,10 @@ describe('ProfilePage', () => {
   });
 
   it('enters edit mode and saves', async () => {
-    mockUpdateProfile.mockResolvedValue({ data: { ...mockProfile, displayName: 'New Name' }, status: 200 });
+    mockUpdateProfile.mockResolvedValue({
+      data: { ...mockProfile, displayName: 'New Name' },
+      status: 200,
+    });
     render(<ProfilePage />);
     await waitFor(() => expect(screen.getByText('Edit Profile')).toBeInTheDocument());
 
@@ -68,7 +71,10 @@ describe('ProfilePage', () => {
   });
 
   it('shows error on failed save', async () => {
-    mockUpdateProfile.mockResolvedValue({ error: { error: 'Server error', code: 'ERR' }, status: 500 });
+    mockUpdateProfile.mockResolvedValue({
+      error: { error: 'Server error', code: 'ERR' },
+      status: 500,
+    });
     render(<ProfilePage />);
     await waitFor(() => fireEvent.click(screen.getByText('Edit Profile')));
     fireEvent.click(screen.getByText('Save'));

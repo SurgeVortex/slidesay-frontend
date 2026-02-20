@@ -30,7 +30,12 @@ describe('SlideEditor', () => {
   });
 
   it('switches to content slide and shows bullets', () => {
-    render(<SlideEditor slide={{ ...baseSlide, type: 'content', bullets: ['abc', 'def'] }} onChange={vi.fn()} />);
+    render(
+      <SlideEditor
+        slide={{ ...baseSlide, type: 'content', bullets: ['abc', 'def'] }}
+        onChange={vi.fn()}
+      />,
+    );
     expect(screen.getByText(/Bullets/i)).toBeInTheDocument();
     expect(screen.getByDisplayValue('abc')).toBeInTheDocument();
     expect(screen.getByDisplayValue('def')).toBeInTheDocument();
@@ -54,12 +59,15 @@ describe('SlideEditor', () => {
 
   it('lets user add a bullet point and fire onChange', async () => {
     const handleChange = vi.fn();
-    render(<SlideEditor slide={{ ...baseSlide, type: 'content', bullets: [] }} onChange={handleChange} />);
+    render(
+      <SlideEditor
+        slide={{ ...baseSlide, type: 'content', bullets: [] }}
+        onChange={handleChange}
+      />,
+    );
     const addBullet = screen.getByRole('button', { name: /add bullet/i });
     await userEvent.setup().click(addBullet);
-    expect(handleChange).toHaveBeenCalledWith(
-      expect.objectContaining({ bullets: [''] })
-    );
+    expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ bullets: [''] }));
   });
 
   it('lets user update and remove a bullet', () => {
@@ -67,13 +75,9 @@ describe('SlideEditor', () => {
     const handleChange = vi.fn();
     render(<SlideEditor slide={slide} onChange={handleChange} />);
     fireEvent.change(screen.getByDisplayValue('foo'), { target: { value: 'bar' } });
-    expect(handleChange).toHaveBeenCalledWith(
-      expect.objectContaining({ bullets: ['bar'] })
-    );
+    expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ bullets: ['bar'] }));
     fireEvent.click(screen.getByRole('button', { name: /✕/i }));
-    expect(handleChange).toHaveBeenCalledWith(
-      expect.objectContaining({ bullets: [] })
-    );
+    expect(handleChange).toHaveBeenCalledWith(expect.objectContaining({ bullets: [] }));
   });
 
   it('renders section break without subtitle or bullets', () => {
@@ -93,7 +97,12 @@ describe('SlideEditor', () => {
   });
 
   it('handles empty optional fields safely', () => {
-    render(<SlideEditor slide={{ type: 'title', title: '', subtitle: undefined, notes: undefined }} onChange={vi.fn()} />);
+    render(
+      <SlideEditor
+        slide={{ type: 'title', title: '', subtitle: undefined, notes: undefined }}
+        onChange={vi.fn()}
+      />,
+    );
     const titleInput = getFieldByLabel(/^Title$/i) as HTMLInputElement;
     expect(titleInput.value).toBe('');
     const subtitleInput = getFieldByLabel(/Subtitle/i) as HTMLInputElement;

@@ -32,7 +32,7 @@
   font-weight: 600;
   font-size: 0.95rem;
   border: none;
-  box-shadow: 0 2px 10px var(--ss-glow-primary, rgba(255,138,61,0.17));
+  box-shadow: 0 2px 10px var(--ss-glow-primary, rgba(255, 138, 61, 0.17));
   font-family: var(--ss-font);
 }
 
@@ -64,7 +64,7 @@
   transition: all 0.2s;
   position: relative;
   background: var(--ss-bg-card);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
   color: var(--ss-text);
   backdrop-filter: blur(8px);
 }

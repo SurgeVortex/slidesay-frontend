@@ -20,8 +20,16 @@ class MockSpeechRecognition {
   }
 }
 
-Object.defineProperty(window, 'SpeechRecognition', { value: MockSpeechRecognition, writable: true, configurable: true });
-Object.defineProperty(window, 'webkitSpeechRecognition', { value: MockSpeechRecognition, writable: true, configurable: true });
+Object.defineProperty(window, 'SpeechRecognition', {
+  value: MockSpeechRecognition,
+  writable: true,
+  configurable: true,
+});
+Object.defineProperty(window, 'webkitSpeechRecognition', {
+  value: MockSpeechRecognition,
+  writable: true,
+  configurable: true,
+});
 
 import { useVoiceRecorder } from '../hooks/useVoiceRecorder';
 
