@@ -1,25 +1,5 @@
 {
   "navigationFallback": {
-    "rewrite": "/index.html",
-    "exclude": [
-      "/images/*.{png,jpg,gif}",
-      "/css/*",
-      "/api/*",
-      "*.{js,css,png,jpg,gif,ico,svg,woff,woff2}"
-    ]
-  },
-  "globalHeaders": {
-    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://login.microsoftonline.com https://isonetcasa.ciamlogin.com https://*.grafana.net; frame-src 'self' https://login.microsoftonline.com https://isonetcasa.ciamlogin.com; frame-ancestors 'none';",
-    "X-Content-Type-Options": "nosniff",
-    "X-Frame-Options": "DENY",
-    "X-XSS-Protection": "1; mode=block",
-    "Referrer-Policy": "strict-origin-when-cross-origin",
-    "Permissions-Policy": "geolocation=(), microphone=(self), camera=()"
-  },
-  "responseOverrides": {
-    "404": {
-      "rewrite": "/index.html",
-      "statusCode": 200
-    }
+    "rewrite": "/index.html"
   }
 }
