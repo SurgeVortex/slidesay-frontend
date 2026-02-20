@@ -39,7 +39,7 @@ describe('ExportButton', () => {
     expect(screen.getByRole('button')).toBeDisabled();
   });
 
-  it('shows loading state during export', async () => {
+  it('shows loading state during export', () => {
     mockExport.mockReturnValue(new Promise(() => {})); // never resolves
     render(<ExportButton format="pptx" presentationId="abc" />);
     fireEvent.click(screen.getByRole('button'));
