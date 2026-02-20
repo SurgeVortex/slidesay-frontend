@@ -62,13 +62,12 @@ jobs:
           ls -la dist/
 
       - name: Deploy to Azure Static Web Apps
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          skip_app_build: true
-          app_location: "dist"
+        env:
+          SWA_CLI_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+        run: |
+          npx @azure/static-web-apps-cli deploy dist \
+            --env production \
+            --verbose
 
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
