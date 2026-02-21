@@ -82,7 +82,8 @@ jobs:
             -e "SWA_DEPLOYMENT_TOKEN=$SWA_DEPLOYMENT_TOKEN" \
             alpine:3.19 sh -c '
               apk add --no-cache libstdc++ libgcc icu-libs 2>/dev/null
-              StaticSitesClient upload \
+              cp /usr/local/bin/StaticSitesClient /tmp/ssc && chmod +x /tmp/ssc
+              /tmp/ssc upload \
                 --app /app/dist \
                 --skipAppBuild true \
                 --apiToken "$SWA_DEPLOYMENT_TOKEN" \
