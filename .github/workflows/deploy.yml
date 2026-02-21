@@ -15,10 +15,10 @@ permissions:
   pull-requests: write
 
 jobs:
-  build_and_deploy:
+  build:
     if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: self-hosted
-    name: Build and Deploy
+    name: Build and Test
     steps:
       - name: Checkout code
         uses: actions/checkout@v6
@@ -56,42 +56,43 @@ jobs:
 
       - name: Verify SWA config in build output
         run: |
-          echo "=== staticwebapp.config.json ==="
           cat dist/staticwebapp.config.json
-          echo "=== dist/ contents ==="
           ls -la dist/
 
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  deploy:
+    needs: build
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    name: Deploy to SWA
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
       - name: Deploy to Azure Static Web Apps
-        env:
-          SWA_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-        run: |
-          # Create a Dockerfile that includes StaticSitesClient + our dist
-          # This avoids all volume mount path issues with Docker-in-Docker
-          cat > /tmp/swa-deploy.Dockerfile << 'DOCKERFILE'
-          FROM --platform=linux/amd64 alpine:3.19
-          RUN apk add --no-cache libstdc++ libgcc icu-libs curl
-          RUN curl -sL "https://swalocaldeployv2-bndtgugjgqc3dhdx.b01.azurefd.net/downloads/08e29138cd3dcda4ffda6d587aa580028110c1c7/linux/StaticSitesClient" -o /usr/local/bin/ssc && chmod +x /usr/local/bin/ssc
-          DOCKERFILE
-          
-          # Build the deploy image
-          docker build --platform linux/amd64 -t swa-deployer -f /tmp/swa-deploy.Dockerfile /tmp
-          
-          # Tar dist and pipe into container (no volume mounts needed!)
-          tar -cf - dist | docker run --rm -i --platform linux/amd64 \
-            -e "SWA_DEPLOYMENT_TOKEN=$SWA_DEPLOYMENT_TOKEN" \
-            swa-deployer sh -c '
-              cd / && tar -xf - 
-              /usr/local/bin/ssc upload \
-                --app /dist \
-                --skipAppBuild true \
-                --apiToken "$SWA_DEPLOYMENT_TOKEN" \
-                --verbose
-            '
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          skip_app_build: true
+          app_location: "dist"
 
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     name: Close Pull Request
     steps:
       - name: Close Pull Request
-        run: echo "PR closed"
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          action: "close"
