@@ -1,6 +1,5 @@
 import { MsalProvider } from '@azure/msal-react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 import { msalInstance } from '../config/msal.config';
@@ -25,6 +24,7 @@ const mockUser: UserInfo = {
   email: 'test@example.com',
   identityProvider: 'aad',
   userRoles: ['authenticated'],
+  userDetails: 'test@example.com',
 };
 
 function renderWelcome(user: UserInfo = mockUser) {
