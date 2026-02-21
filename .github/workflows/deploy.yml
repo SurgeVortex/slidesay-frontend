@@ -65,26 +65,24 @@ jobs:
         env:
           SWA_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
         run: |
-          # Download StaticSitesClient binary
-          curl -sL "https://swalocaldeployv2-bndtgugjgqc3dhdx.b01.azurefd.net/downloads/08e29138cd3dcda4ffda6d587aa580028110c1c7/linux/StaticSitesClient" -o ./StaticSitesClient
-          chmod +x ./StaticSitesClient
+          # Create a Dockerfile that includes StaticSitesClient + our dist
+          # This avoids all volume mount path issues with Docker-in-Docker
+          cat > /tmp/swa-deploy.Dockerfile << 'DOCKERFILE'
+          FROM --platform=linux/amd64 alpine:3.19
+          RUN apk add --no-cache libstdc++ libgcc icu-libs curl
+          RUN curl -sL "https://swalocaldeployv2-bndtgugjgqc3dhdx.b01.azurefd.net/downloads/08e29138cd3dcda4ffda6d587aa580028110c1c7/linux/StaticSitesClient" -o /usr/local/bin/ssc && chmod +x /usr/local/bin/ssc
+          DOCKERFILE
           
-          # Verify dist exists in runner
-          ls -la dist/staticwebapp.config.json
+          # Build the deploy image
+          docker build --platform linux/amd64 -t swa-deployer -f /tmp/swa-deploy.Dockerfile /tmp
           
-          # The runner is a Docker container itself. Docker sibling containers
-          # mount HOST paths. The runner workspace is at /tmp/runner/<repo>/<repo>/ on host.
-          HOST_WORKSPACE="/tmp/runner/slidesay-frontend/slidesay-frontend"
-          
-          docker run --rm --platform linux/amd64 \
-            -v "${HOST_WORKSPACE}/dist:/app/dist:ro" \
-            -v "${HOST_WORKSPACE}/StaticSitesClient:/usr/local/bin/StaticSitesClient:ro" \
+          # Tar dist and pipe into container (no volume mounts needed!)
+          tar -cf - dist | docker run --rm -i --platform linux/amd64 \
             -e "SWA_DEPLOYMENT_TOKEN=$SWA_DEPLOYMENT_TOKEN" \
-            alpine:3.19 sh -c '
-              apk add --no-cache libstdc++ libgcc icu-libs 2>/dev/null
-              cp /usr/local/bin/StaticSitesClient /tmp/ssc && chmod +x /tmp/ssc
-              /tmp/ssc upload \
-                --app /app/dist \
+            swa-deployer sh -c '
+              cd / && tar -xf - 
+              /usr/local/bin/ssc upload \
+                --app /dist \
                 --skipAppBuild true \
                 --apiToken "$SWA_DEPLOYMENT_TOKEN" \
                 --verbose
