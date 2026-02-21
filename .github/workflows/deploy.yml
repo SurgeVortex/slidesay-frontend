@@ -62,13 +62,18 @@ jobs:
           ls -la dist/
 
       - name: Deploy to Azure Static Web Apps
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          skip_app_build: true
-          app_location: "dist"
+        env:
+          SWA_DEPLOYMENT_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+        run: |
+          # Download StaticSitesClient (the same binary the official Action uses internally)
+          curl -sL "https://swalocaldeployv2-bndtgugjgqc3dhdx.b01.azurefd.net/downloads/08e29138cd3dcda4ffda6d587aa580028110c1c7/linux/StaticSitesClient" -o /tmp/StaticSitesClient
+          chmod +x /tmp/StaticSitesClient
+          # Deploy pre-built dist/ directly (no Docker container needed)
+          /tmp/StaticSitesClient upload \
+            --app ./dist \
+            --skipAppBuild true \
+            --apiToken "$SWA_DEPLOYMENT_TOKEN" \
+            --verbose
 
   close_pull_request:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
